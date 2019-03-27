@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primaryColor">#F47B00</color>
-    <color name="primaryLightColor">#ffac42</color>
-    <color name="primaryDarkColor">#ba4c00</color>
-    <color name="secondaryColor">#01579b</color>
-    <color name="secondaryLightColor">#4f83cc</color>
-    <color name="secondaryDarkColor">#002f6c</color>
-    <color name="primaryTextColor">#FFFFFF</color>
-    <color name="secondaryTextColor">#ffffff</color>
-    <color name="accentColor">#FF5722</color>
-    <color name="input_background">#fff</color>
+    <color name="color_primary">#F47B00</color>
+    <color name="color_primary_light">#ffac42</color>
+    <color name="color_primary_dark">#ba4c00</color>
+    <color name="color_secondary">#01579b</color>
+    <color name="color_secondary_light">#4f83cc</color>
+    <color name="color_secondary_dark">#002f6c</color>
+    <color name="color_primary_text">#FFFFFF</color>
+    <color name="color_secondary_text">#ffffff</color>
+    <color name="color_accent">#FF5722</color>
+    <color name="color_input_background">#fff</color>
 </resources>
