@@ -6,22 +6,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_primary"
-    android:padding="@dimen/login_container_padding"
-    tools:context=".ui.LoginFragment">
+    android:paddingStart="@dimen/login_container_padding_horizontal"
+    android:paddingEnd="@dimen/login_container_padding_horizontal"
+    tools:context=".ui.login.LoginFragment">
 
     <TextView
-        android:id="@+id/text_title"
+        android:id="@+id/textTitle"
         style="@style/LoginTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/login_title_text"
-        app:layout_constraintBottom_toTopOf="@+id/edit_email"
+        app:layout_constraintBottom_toTopOf="@+id/editEmail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/edit_email"
+        android:id="@+id/editEmail"
         style="@style/LoginInput"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -34,7 +35,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/edit_password"
+        android:id="@+id/editPassword"
         style="@style/LoginInput"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -42,20 +43,31 @@
         android:ems="10"
         android:hint="@string/login_password_hint"
         android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="@+id/edit_email"
-        app:layout_constraintStart_toStartOf="@+id/edit_email"
-        app:layout_constraintTop_toBottomOf="@+id/edit_email" />
+        app:layout_constraintEnd_toEndOf="@+id/editEmail"
+        app:layout_constraintStart_toStartOf="@+id/editEmail"
+        app:layout_constraintTop_toBottomOf="@+id/editEmail" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/button_login"
+        android:id="@+id/buttonLogin"
         style="@style/LoginButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/login_button_margin_top"
         android:background="@color/color_secondary"
         android:text="@string/login_button_text"
-        app:layout_constraintEnd_toEndOf="@+id/edit_password"
-        app:layout_constraintStart_toStartOf="@+id/edit_password"
-        app:layout_constraintTop_toBottomOf="@+id/edit_password" />
+        app:layout_constraintEnd_toEndOf="@+id/editPassword"
+        app:layout_constraintStart_toStartOf="@+id/editPassword"
+        app:layout_constraintTop_toBottomOf="@+id/editPassword" />
+
+    <ProgressBar
+        android:id="@+id/progressLoading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:theme="@style/LoginProgress"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonLogin"
+        app:layout_constraintEnd_toEndOf="@+id/buttonLogin"
+        app:layout_constraintStart_toStartOf="@+id/buttonLogin"
+        app:layout_constraintTop_toTopOf="@+id/buttonLogin" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

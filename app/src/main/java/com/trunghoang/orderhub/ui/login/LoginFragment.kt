@@ -16,6 +16,7 @@ import com.trunghoang.orderhub.R
 import com.trunghoang.orderhub.model.APIResponse
 import com.trunghoang.orderhub.model.EnumStatus
 import dagger.android.support.AndroidSupportInjection
+import kotlinx.android.synthetic.main.fragment_login.view.*
 import javax.inject.Inject
 
 class LoginFragment : Fragment() {
@@ -29,11 +30,11 @@ class LoginFragment : Fragment() {
     lateinit var viewModel: LoginViewModel
 
     private val loginButton: Button by lazy {
-        view!!.findViewById<Button>(R.id.button_login)
+        view!!.buttonLogin
     }
 
     private val loginProgress: ProgressBar by lazy {
-        view!!.findViewById<ProgressBar>(R.id.progress_loading)
+        view!!.progressLoading
     }
 
     override fun onAttach(context: Context) {
@@ -52,8 +53,8 @@ class LoginFragment : Fragment() {
         viewModel.loginResponse.observe(this, Observer { apiResponse ->
             consumeResponse(apiResponse)
         })
-        val emailInput = view.findViewById<EditText>(R.id.edit_email)
-        val passwordInput = view.findViewById<EditText>(R.id.edit_password)
+        val emailInput = view.editEmail
+        val passwordInput = view.editPassword
         loginButton.setOnClickListener { v ->
             viewModel.authenticate(
                 emailInput.text.toString(),

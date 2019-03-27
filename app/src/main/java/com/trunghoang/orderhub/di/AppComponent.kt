@@ -5,10 +5,13 @@ import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [
-    AndroidSupportInjectionModule::class,
-    FragmentModule::class,
-    ViewModelModule::class])
+@Component(
+    modules = [
+        AndroidSupportInjectionModule::class,
+        FragmentModule::class,
+        ViewModelModule::class,
+        AuthRemoteModule::class]
+)
 interface AppComponent {
     fun inject(appController: AppController)
 }
