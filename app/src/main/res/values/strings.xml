@@ -7,4 +7,17 @@
     <string name="login_success_text">Đăng nhập thành công</string>
     <string name="login_fail_text">Email hoặc mật khẩu không đúng</string>
     <string name="error_general">Có lỗi xảy ra</string>
+    <string name="item_status_1">Đơn chờ gửi</string>
+    <string name="item_status_2">Đã tạo đơn vận chuyển</string>
+    <string name="item_status_3">Đã nhận đơn</string>
+    <string name="item_status_4">Đang giao</string>
+    <string name="item_status_5">Chờ giao lại</string>
+    <string name="item_status_6">Đang trả hàng</string>
+    <string name="item_status_7">Chờ chuyển COD</string>
+    <string name="item_status_8">Hoàn thành</string>
+    <string name="item_order_group_title">Đơn theo trạng thái</string>
+    <string name="item_add_product">Thêm sản phẩm</string>
+    <string name="item_all_orders">Tất cả đơn hàng</string>
+    <string name="item_all_products">Tất cả sản phẩm</string>
+    <string name="item_log_out">Đăng xuất</string>
 </resources>

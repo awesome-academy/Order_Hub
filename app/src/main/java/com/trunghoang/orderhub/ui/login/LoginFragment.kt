@@ -6,13 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.trunghoang.orderhub.R
-import com.trunghoang.orderhub.di.DaggerAppComponent
 import com.trunghoang.orderhub.model.APIResponse
 import com.trunghoang.orderhub.model.EnumStatus
 import dagger.android.support.AndroidSupportInjection
@@ -22,11 +20,15 @@ import javax.inject.Inject
 class LoginFragment : Fragment() {
     companion object {
         @JvmStatic
-        fun newInstance() = LoginFragment()
+        fun newInstance(onLoggedInCallback: OnLoggedInCallback) =
+            LoginFragment().apply {
+                this.mOnLoggedInCallback = onLoggedInCallback
+            }
     }
 
     @Inject
     lateinit var viewModel: LoginViewModel
+    lateinit var mOnLoggedInCallback: OnLoggedInCallback
     private val loginButton: Button? by lazy {
         view?.buttonLogin
     }
@@ -70,7 +72,8 @@ class LoginFragment : Fragment() {
 
     private fun showLoading(loading: Boolean) {
         loginButton?.visibility = if (loading) View.INVISIBLE else View.VISIBLE
-        loginProgress?.visibility = if (loading) View.VISIBLE else View.INVISIBLE
+        loginProgress?.visibility =
+            if (loading) View.VISIBLE else View.INVISIBLE
     }
 
     private fun showSuccess(res: APIResponse<String>) {
@@ -86,6 +89,8 @@ class LoginFragment : Fragment() {
             ),
             Toast.LENGTH_SHORT
         ).show()
+        if (res.data != APIResponse.NO_VALUE)
+            mOnLoggedInCallback.onLoggedIn(res.data)
     }
 
     private fun showError(res: APIResponse<String>) {
@@ -95,5 +100,9 @@ class LoginFragment : Fragment() {
             getString(R.string.error_general),
             Toast.LENGTH_SHORT
         ).show()
+    }
+
+    interface OnLoggedInCallback {
+        fun onLoggedIn(token: String?)
     }
 }

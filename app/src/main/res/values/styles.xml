@@ -30,4 +30,30 @@
     <style name="LoginProgress" parent="Widget.AppCompat.ProgressBar">
         <item name="colorAccent">@color/color_primary_text</item>
     </style>
+
+    <style name="MainScreenToolbar"
+        parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
+        <item name="android:color">@color/color_primary_text</item>
+    </style>
+
+    <style name="HeaderDrawer">
+        <item name="android:background">@color/color_primary</item>
+        <item name="android:paddingTop">@dimen/header_drawer_padding_top</item>
+        <item name="android:paddingBottom">@dimen/header_drawer_padding</item>
+        <item name="android:paddingLeft">@dimen/header_drawer_padding</item>
+        <item name="android:paddingRight">@dimen/header_drawer_padding</item>
+        <item name="android:textColor">@color/color_primary_text</item>
+    </style>
+
+    <style name="HeaderDrawerTitle">
+        <item name="android:textSize">@dimen/header_drawer_title_size</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/color_primary_text</item>
+    </style>
+
+    <style name="HeaderDrawerButton">
+        <item name="android:adjustViewBounds">true</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:scaleType">centerCrop</item>
+    </style>
 </resources>
