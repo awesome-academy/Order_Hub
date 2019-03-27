@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">OrderHub</string>
+    <string name="login_title_text">Order Hub</string>
+    <string name="login_email_hint">Email</string>
+    <string name="login_password_hint">Mật khẩu</string>
+    <string name="login_button_text">Đăng nhập</string>
 </resources>

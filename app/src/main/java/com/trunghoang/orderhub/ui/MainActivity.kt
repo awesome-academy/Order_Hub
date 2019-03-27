@@ -1,7 +1,8 @@
-package com.trunghoang.orderhub
+package com.trunghoang.orderhub.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.trunghoang.orderhub.R
 
 class MainActivity : AppCompatActivity() {
 
