@@ -13,4 +13,21 @@
     <dimen name="header_drawer_padding">10dp</dimen>
     <dimen name="header_drawer_setting_margin_top">8dp</dimen>
     <dimen name="header_drawer_search_margin_right">8dp</dimen>
+    <dimen name="item_order_content_margin">10dp</dimen>
+    <dimen name="item_order_name_margin_top">8dp</dimen>
+    <dimen name="item_order_name_size">20sp</dimen>
+    <dimen name="item_order_cod_size">30sp</dimen>
+    <dimen name="divider_height">1dp</dimen>
+    <dimen name="item_order_divider_margin_top">8dp</dimen>
+    <dimen name="item_order_icon_padding">8dp</dimen>
+    <dimen name="item_order_button_products_padding_top">10dp</dimen>
+    <dimen name="item_order_products_padding_vertical">5dp</dimen>
+    <dimen name="item_order_product_name_padding_vertical">20dp</dimen>
+    <dimen name="item_order_product_name_margin_horizontal">24dp</dimen>
+    <dimen name="item_order_product_quantity_margin_left">8dp</dimen>
+    <dimen name="item_order_product_margin_vertical">10dp</dimen>
+    <dimen name="item_order_margin_vertical">10dp</dimen>
+    <dimen name="order_list_padding_horizontal">10dp</dimen>
+    <dimen name="item_order_radius">8dp</dimen>
+    <dimen name="item_order_elevation">4dp</dimen>
 </resources>

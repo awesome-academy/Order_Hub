@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/item_order_margin_vertical"
+    app:cardCornerRadius="@dimen/item_order_radius"
+    app:cardElevation="@dimen/item_order_elevation"
+    app:cardUseCompatPadding="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_item_order"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/item_order_content_margin"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/sample_date" />
+
+        <TextView
+            android:id="@+id/textName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/item_order_name_margin_top"
+            android:textColor="@color/color_black_text"
+            android:textSize="@dimen/item_order_name_size"
+            app:layout_constraintStart_toStartOf="@+id/textDate"
+            app:layout_constraintTop_toBottomOf="@+id/textDate"
+            tools:text="@string/sample_name" />
+
+        <TextView
+            android:id="@+id/textCod"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_black_text"
+            android:textSize="@dimen/item_order_cod_size"
+            app:layout_constraintBaseline_toBaselineOf="@+id/textName"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="@string/sample_cod" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/divider_height"
+            android:layout_marginTop="@dimen/item_order_divider_margin_top"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="@+id/textCod"
+            app:layout_constraintStart_toStartOf="@+id/textName"
+            app:layout_constraintTop_toBottomOf="@+id/textName" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonProducts"
+            style="@style/ItemOrderButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:drawableBottom="@drawable/ic_item_order_producst_expand"
+            android:paddingTop="@dimen/item_order_button_products_padding_top"
+            android:text="@string/item_order_button_products_text"
+            app:layout_constraintEnd_toEndOf="@+id/divider"
+            app:layout_constraintStart_toStartOf="@+id/divider"
+            app:layout_constraintTop_toTopOf="@+id/divider" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerProducts"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/item_order_products_padding_vertical"
+            android:paddingBottom="@dimen/item_order_products_padding_vertical"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@+id/buttonProducts"
+            app:layout_constraintStart_toStartOf="@+id/buttonProducts"
+            app:layout_constraintTop_toBottomOf="@+id/buttonProducts"
+            tools:listitem="@layout/item_order_list_product" />
+
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/divider_height"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="@+id/buttonProducts"
+            app:layout_constraintStart_toStartOf="@+id/buttonProducts"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerProducts" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonDetail"
+            style="@style/ItemOrderButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:drawableStart="@drawable/ic_item_order_detail"
+            android:drawableLeft="@drawable/ic_item_order_detail"
+            android:drawablePadding="@dimen/item_order_icon_padding"
+            android:text="@string/item_order_button_detail_text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider2" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonCall"
+            style="@style/ItemOrderButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:drawableStart="@drawable/ic_item_order_call"
+            android:drawableLeft="@drawable/ic_item_order_call"
+            android:text="@string/item_order_button_call_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/buttonDetail" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
