@@ -29,4 +29,5 @@
     <string name="sample_quantity">x 1</string>
     <string name="sample_product_name">Giày vans đỏ</string>
     <string name="sample_price">1.700.000</string>
+    <string name="notice_no_order">Hiện tại không có đơn hàng ở trạng thái này</string>
 </resources>

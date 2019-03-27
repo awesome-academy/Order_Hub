@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import com.trunghoang.orderhub.R
 import com.trunghoang.orderhub.model.APIResponse
 import com.trunghoang.orderhub.model.EnumStatus
+import com.trunghoang.orderhub.ui.mainActivity.MainViewModel
 import com.trunghoang.orderhub.utils.toast
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_login.view.*
@@ -24,8 +25,9 @@ class LoginFragment : Fragment() {
     }
 
     @Inject
-    lateinit var viewModel: LoginViewModel
-    var onLoggedInCallback: OnLoggedInCallback? = null
+    lateinit var mainViewModel: MainViewModel
+    @Inject
+    lateinit var loginViewModel: LoginViewModel
     private val loginButton: Button? by lazy {
         view?.buttonLogin
     }
@@ -36,7 +38,6 @@ class LoginFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         AndroidSupportInjection.inject(this)
-        onLoggedInCallback = if (context is OnLoggedInCallback) context else null
     }
 
     override fun onCreateView(
@@ -47,13 +48,13 @@ class LoginFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewModel.loginResponse.observe(this, Observer { apiResponse ->
+        loginViewModel.loginResponse.observe(this, Observer { apiResponse ->
             consumeResponse(apiResponse)
         })
         val emailInput = view.editEmail
         val passwordInput = view.editPassword
-        loginButton?.setOnClickListener { v ->
-            viewModel.authenticate(
+        loginButton?.setOnClickListener {
+            loginViewModel.authenticate(
                 emailInput.text.toString(),
                 passwordInput.text.toString()
             )
@@ -85,16 +86,11 @@ class LoginFragment : Fragment() {
                 }
             )
         )
-        if (res.data != APIResponse.NO_VALUE)
-            onLoggedInCallback?.onLoggedIn(res.data)
+        if (res.data != APIResponse.NO_VALUE) mainViewModel.saveSharedPref(res.data)
     }
 
     private fun showError(res: APIResponse<String>) {
         showLoading(false)
         context?.toast(getString(R.string.error_general))
-    }
-
-    interface OnLoggedInCallback {
-        fun onLoggedIn(token: String?)
     }
 }

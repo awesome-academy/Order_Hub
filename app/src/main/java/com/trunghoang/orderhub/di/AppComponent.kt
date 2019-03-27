@@ -13,10 +13,10 @@ import javax.inject.Singleton
         AndroidSupportInjectionModule::class,
         AndroidInjectionModule::class,
         AppModule::class,
-        FragmentModule::class,
         ActivityModule::class,
         ViewModelModule::class,
-        AuthRemoteModule::class]
+        AuthRemoteModule::class,
+        FirebaseModule::class]
 )
 interface AppComponent {
     fun inject(appController: AppController)
