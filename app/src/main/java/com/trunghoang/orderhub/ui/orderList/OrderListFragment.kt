@@ -9,9 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.trunghoang.orderhub.R
-import com.trunghoang.orderhub.model.APIResponse
+import com.trunghoang.orderhub.data.OrderParams
 import com.trunghoang.orderhub.model.EnumStatus
-import com.trunghoang.orderhub.model.Order
 import com.trunghoang.orderhub.model.OrderStatus
 import com.trunghoang.orderhub.ui.mainActivity.MainViewModel
 import com.trunghoang.orderhub.utils.toast
@@ -58,28 +57,27 @@ class OrderListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         mainViewModel.orderStatus.value = status
-        orderListViewModel.ordersResponse.observe(this, Observer {
-            consumeOrdersResponse(it)
+        getOrders(status)
+        orderListViewModel.progressStatus.observe(this, Observer {
+            consumeOrderLoadingProgress(it)
         })
-        if (status != null) orderListViewModel.getOrders(status!!)
+        orderListViewModel.ordersPagedList.observe(this, Observer {
+            orderAdapter.submitList(it)
+        })
         with(recyclerOrders) {
             layoutManager = linearLayoutManager
             adapter = orderAdapter
         }
+        swipeRefresh.setOnRefreshListener {
+            getOrders(status)
+            swipeRefresh.isRefreshing = false
+        }
     }
 
-    private fun consumeOrdersResponse(res: APIResponse<List<Order>>) {
-        when (res.status) {
+    private fun consumeOrderLoadingProgress(loadingStatus: EnumStatus) {
+        when (loadingStatus) {
             EnumStatus.LOADING -> showProgress(true)
-            EnumStatus.SUCCESS -> {
-                showProgress(false)
-                if (!res.data.isNullOrEmpty()) {
-                    showNoResult(false)
-                    orderAdapter.orders = res.data!!
-                } else {
-                    showNoResult(true)
-                }
-            }
+            EnumStatus.SUCCESS -> showProgress(false)
             EnumStatus.ERROR -> {
                 showProgress(false)
                 showNoResult(true)
@@ -93,6 +91,7 @@ class OrderListFragment : Fragment() {
             showNoResult(false)
             progressBar.visibility = View.VISIBLE
         } else {
+            showNoResult(orderAdapter.itemCount == 0)
             progressBar.visibility = View.GONE
         }
     }
@@ -102,6 +101,12 @@ class OrderListFragment : Fragment() {
             textNoResult.visibility = View.VISIBLE
         } else {
             textNoResult.visibility = View.GONE
+        }
+    }
+
+    private fun getOrders(@OrderStatus status: Int?) {
+        status?.let {
+            orderListViewModel.getOrders(OrderParams<Long>(status = it))
         }
     }
 }

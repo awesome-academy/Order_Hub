@@ -1,6 +1,10 @@
 package com.trunghoang.orderhub.model
 
+import com.google.firebase.firestore.Exclude
+
 data class Order(
+    @Exclude
+    var id: String = "",
     var createdTime: Long = 0,
     var lastModified: Long = 0,
     var name: String = "",

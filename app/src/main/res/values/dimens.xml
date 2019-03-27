@@ -30,4 +30,5 @@
     <dimen name="order_list_padding_horizontal">10dp</dimen>
     <dimen name="item_order_radius">8dp</dimen>
     <dimen name="item_order_elevation">1dp</dimen>
+    <dimen name="order_list_progress_margin_top">10dp</dimen>
 </resources>

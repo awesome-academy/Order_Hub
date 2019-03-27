@@ -4,6 +4,8 @@ import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.trunghoang.orderhub.R
 import com.trunghoang.orderhub.model.Order
@@ -11,12 +13,8 @@ import com.trunghoang.orderhub.utils.FormatUtils
 import kotlinx.android.synthetic.main.item_order_list.view.*
 import javax.inject.Inject
 
-class OrderAdapter @Inject constructor() : RecyclerView.Adapter<OrderAdapter.OrderViewHolder>() {
-    var orders: List<Order> = ArrayList()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
+class OrderAdapter @Inject constructor() :
+    PagedListAdapter<Order, OrderAdapter.OrderViewHolder>(OrderDiffCallback) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -27,10 +25,10 @@ class OrderAdapter @Inject constructor() : RecyclerView.Adapter<OrderAdapter.Ord
             OrderViewHolder(it)
         }
 
-    override fun getItemCount() = orders.size
-
     override fun onBindViewHolder(holder: OrderViewHolder, position: Int) {
-        holder.bindView(orders[position])
+        getItem(position)?.let {
+            holder.bindView(it)
+        }
     }
 
     class OrderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -44,6 +42,20 @@ class OrderAdapter @Inject constructor() : RecyclerView.Adapter<OrderAdapter.Ord
                 textName.text = order.name
                 textCod.text = FormatUtils.formatCurrency(order.cod)
             }
+        }
+    }
+
+    companion object {
+        val OrderDiffCallback = object : DiffUtil.ItemCallback<Order>() {
+            override fun areItemsTheSame(
+                oldItem: Order,
+                newItem: Order
+            ) = oldItem.id == newItem.id
+
+            override fun areContentsTheSame(
+                oldItem: Order,
+                newItem: Order
+            ) = oldItem == newItem
         }
     }
 }
