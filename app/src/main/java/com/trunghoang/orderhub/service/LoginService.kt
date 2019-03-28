@@ -20,31 +20,33 @@ class LoginService {
         .baseUrl(BASE_LOGIN_URL)
         .addConverterFactory(ScalarsConverterFactory.create())
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-        .client(OkHttpClient.Builder()
-                    .followRedirects(false)
-                    .addInterceptor { chain ->
-                        val req = chain.request()
-                        var res = chain.proceed(req)
-                        if (res.code() == SEE_OTHER) {
-                            res = chain.proceed(
-                                req.newBuilder()
-                                    .url(res.header(HEADER_LOCATION)!!)
-                                    .build()
-                            )
-                            res = chain.proceed(
-                                req.newBuilder()
-                                    .url(URL_ACCOUNT)
-                                    .addHeader(
-                                        HEADER_COOKIE,
-                                        res.header(HEADER_SET_COOKIE)!!
-                                    )
-                                    .build()
-                            )
-                        }
-                        res
-                    }
-                    .build())
+        .client(httpClient())
         .build()
         .create(GhnAPI::class.java)
         .login(email = email, password = password)
+
+    private fun httpClient() = OkHttpClient.Builder()
+        .followRedirects(false)
+        .addInterceptor { chain ->
+            val req = chain.request()
+            var res = chain.proceed(req)
+            if (res.code() == SEE_OTHER) {
+                res = chain.proceed(
+                    req.newBuilder()
+                        .url(res.header(HEADER_LOCATION)!!)
+                        .build()
+                )
+                res = chain.proceed(
+                    req.newBuilder()
+                        .url(URL_ACCOUNT)
+                        .addHeader(
+                            HEADER_COOKIE,
+                            res.header(HEADER_SET_COOKIE)!!
+                        )
+                        .build()
+                )
+            }
+            res
+        }
+        .build()
 }

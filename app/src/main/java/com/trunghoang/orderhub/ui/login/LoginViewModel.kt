@@ -2,8 +2,7 @@ package com.trunghoang.orderhub.ui.login
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.trunghoang.orderhub.data.Repository
-import com.trunghoang.orderhub.data.remote.RemoteDataSource
+import com.trunghoang.orderhub.data.AuthenticationRepository
 import com.trunghoang.orderhub.model.APIResponse
 import com.trunghoang.orderhub.service.LoginService.Companion.KEY_ATTR
 import com.trunghoang.orderhub.service.LoginService.Companion.SELECTOR_TOKEN
@@ -14,7 +13,7 @@ import org.jsoup.Jsoup
 import javax.inject.Inject
 
 class LoginViewModel @Inject constructor(
-    private val repository: Repository
+    private val authenticationRepository: AuthenticationRepository
 ) : ViewModel() {
     private val compositeDisposable = CompositeDisposable()
     var loginResponse: MutableLiveData<APIResponse<String>> = MutableLiveData()
@@ -25,7 +24,7 @@ class LoginViewModel @Inject constructor(
 
     fun callLogin(email: String, password: String) {
         compositeDisposable.add(
-            repository.callLogin(email, password)
+            authenticationRepository.callLogin(email, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe {
