@@ -15,7 +15,7 @@ object APIConfig {
     const val APP_ID = "apiv3"
 }
 
-interface GhnAPI {
+interface GHNApi {
     @FormUrlEncoded
     @POST(EndPoint.LOGIN)
     fun login(

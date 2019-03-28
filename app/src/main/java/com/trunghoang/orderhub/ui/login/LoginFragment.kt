@@ -55,7 +55,7 @@ class LoginFragment : Fragment() {
         val emailInput = view.findViewById<EditText>(R.id.edit_email)
         val passwordInput = view.findViewById<EditText>(R.id.edit_password)
         loginButton.setOnClickListener { v ->
-            viewModel.callLogin(
+            viewModel.authenticate(
                 emailInput.text.toString(),
                 passwordInput.text.toString()
             )

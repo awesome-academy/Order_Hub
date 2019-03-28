@@ -1,10 +1,13 @@
 package com.trunghoang.orderhub.data.remote
 
-import com.trunghoang.orderhub.data.DataSource
-import com.trunghoang.orderhub.service.LoginService
+import com.trunghoang.orderhub.data.AuthenticationDataSource
+import com.trunghoang.orderhub.service.GHNApi
 import javax.inject.Inject
 
-class AuthenticationRemoteDataSource @Inject constructor(): DataSource {
+class AuthenticationRemoteDataSource @Inject constructor(private val ghnAPI: GHNApi): AuthenticationDataSource {
+    init {
+        DaggerAuthRemoteComponent.builder().build().inject(this)
+    }
     override fun authenticate(email: String, password: String) =
-        LoginService().start(email, password)
+        ghnAPI.login(email = email, password = password)
 }
