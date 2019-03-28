@@ -31,17 +31,19 @@ class LoginViewModel @Inject constructor(
                     loginResponse.value =
                         APIResponse.loading()
                 }
+                .map { s ->
+                    Jsoup.parse(s)
+                        .select(SELECTOR_TOKEN)
+                        ?.first()?.attr(KEY_ATTR)
+                        .let {
+                            APIResponse.success(
+                                it ?: APIResponse.NO_VALUE
+                            )
+                        }
+                }
                 .subscribe(
-                    { result ->
-                        loginResponse.value =
-                            Jsoup.parse(result)
-                                .select(SELECTOR_TOKEN)
-                                ?.first()?.attr(KEY_ATTR)
-                                .let {
-                                    APIResponse.success(
-                                        it ?: APIResponse.NO_VALUE
-                                    )
-                                }
+                    {
+                        loginResponse.value = it
                     },
                     { error ->
                         loginResponse.value =

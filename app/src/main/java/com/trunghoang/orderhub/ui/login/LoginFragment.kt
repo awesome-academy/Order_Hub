@@ -39,9 +39,6 @@ class LoginFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         AndroidSupportInjection.inject(this)
-        viewModel.loginResponse.observe(this, Observer { apiResponse ->
-            consumeResponse(apiResponse)
-        })
     }
 
     override fun onCreateView(
@@ -52,6 +49,9 @@ class LoginFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        viewModel.loginResponse.observe(this, Observer { apiResponse ->
+            consumeResponse(apiResponse)
+        })
         val emailInput = view.findViewById<EditText>(R.id.edit_email)
         val passwordInput = view.findViewById<EditText>(R.id.edit_password)
         loginButton.setOnClickListener { v ->
