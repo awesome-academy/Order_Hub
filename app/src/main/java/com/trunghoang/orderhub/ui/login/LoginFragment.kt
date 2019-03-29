@@ -1,6 +1,5 @@
 package com.trunghoang.orderhub.ui.login
 
-
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,13 +12,14 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.trunghoang.orderhub.R
+import com.trunghoang.orderhub.di.DaggerAppComponent
 import com.trunghoang.orderhub.model.APIResponse
 import com.trunghoang.orderhub.model.EnumStatus
 import dagger.android.support.AndroidSupportInjection
+import kotlinx.android.synthetic.main.fragment_login.view.*
 import javax.inject.Inject
 
 class LoginFragment : Fragment() {
-
     companion object {
         @JvmStatic
         fun newInstance() = LoginFragment()
@@ -27,13 +27,11 @@ class LoginFragment : Fragment() {
 
     @Inject
     lateinit var viewModel: LoginViewModel
-
-    private val loginButton: Button by lazy {
-        view!!.findViewById<Button>(R.id.button_login)
+    private val loginButton: Button? by lazy {
+        view?.buttonLogin
     }
-
-    private val loginProgress: ProgressBar by lazy {
-        view!!.findViewById<ProgressBar>(R.id.progress_loading)
+    private val loginProgress: ProgressBar? by lazy {
+        view?.progressLoading
     }
 
     override fun onAttach(context: Context) {
@@ -52,9 +50,9 @@ class LoginFragment : Fragment() {
         viewModel.loginResponse.observe(this, Observer { apiResponse ->
             consumeResponse(apiResponse)
         })
-        val emailInput = view.findViewById<EditText>(R.id.edit_email)
-        val passwordInput = view.findViewById<EditText>(R.id.edit_password)
-        loginButton.setOnClickListener { v ->
+        val emailInput = view.editEmail
+        val passwordInput = view.editPassword
+        loginButton?.setOnClickListener { v ->
             viewModel.authenticate(
                 emailInput.text.toString(),
                 passwordInput.text.toString()
@@ -71,8 +69,8 @@ class LoginFragment : Fragment() {
     }
 
     private fun showLoading(loading: Boolean) {
-        loginButton.visibility = if (loading) View.INVISIBLE else View.VISIBLE
-        loginProgress.visibility = if (loading) View.VISIBLE else View.INVISIBLE
+        loginButton?.visibility = if (loading) View.INVISIBLE else View.VISIBLE
+        loginProgress?.visibility = if (loading) View.VISIBLE else View.INVISIBLE
     }
 
     private fun showSuccess(res: APIResponse<String>) {

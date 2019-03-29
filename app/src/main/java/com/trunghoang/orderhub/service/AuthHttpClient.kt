@@ -1,9 +1,8 @@
 package com.trunghoang.orderhub.service
 
 import okhttp3.OkHttpClient
-import javax.inject.Inject
 
-class AuthHttpClient @Inject constructor() : OkHttpClient() {
+class AuthHttpClient {
     companion object {
         const val SEE_OTHER = 303
         const val URL_ACCOUNT = "https://api.ghn.vn/home/account"
@@ -12,7 +11,7 @@ class AuthHttpClient @Inject constructor() : OkHttpClient() {
         const val HEADER_SET_COOKIE = "Set-Cookie"
     }
 
-    init {
+    fun create(): OkHttpClient =
         OkHttpClient.Builder()
             .followRedirects(false)
             .addInterceptor { chain ->
@@ -37,5 +36,4 @@ class AuthHttpClient @Inject constructor() : OkHttpClient() {
                 res
             }
             .build()
-    }
 }

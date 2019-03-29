@@ -4,4 +4,7 @@
     <string name="login_email_hint">Email</string>
     <string name="login_password_hint">Mật khẩu</string>
     <string name="login_button_text">Đăng nhập</string>
+    <string name="login_success_text">Đăng nhập thành công</string>
+    <string name="login_fail_text">Email hoặc mật khẩu không đúng</string>
+    <string name="error_general">Có lỗi xảy ra</string>
 </resources>

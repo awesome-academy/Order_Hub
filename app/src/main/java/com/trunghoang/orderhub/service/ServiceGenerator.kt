@@ -11,11 +11,14 @@ class ServiceGenerator {
         const val KEY_ATTR = "value"
     }
 
-    fun createService(httpClient: OkHttpClient): GHNApi = Retrofit.Builder()
-        .baseUrl(BASE_LOGIN_URL)
-        .addConverterFactory(ScalarsConverterFactory.create())
-        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-        .client(httpClient)
-        .build()
-        .create(GHNApi::class.java)
+    fun createService(httpClient: OkHttpClient): GHNApi {
+        val authApi =  Retrofit.Builder()
+            .baseUrl(BASE_LOGIN_URL)
+            .addConverterFactory(ScalarsConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .client(httpClient)
+            .build()
+            .create(GHNApi::class.java)
+        return authApi
+    }
 }

@@ -19,11 +19,15 @@
         <item name="android:background">@drawable/shape_login_input_field</item>
         <item name="android:padding">@dimen/login_input_padding</item>
     </style>
-    
+
     <style name="LoginButton" parent="Widget.AppCompat.Button">
         <item name="android:background">@color/color_secondary</item>
         <item name="android:textColor">@color/color_secondary_text</item>
         <item name="android:textSize">@dimen/login_button_text_size</item>
         <item name="android:padding">@dimen/login_button_padding</item>
+    </style>
+
+    <style name="LoginProgress" parent="Widget.AppCompat.ProgressBar">
+        <item name="colorAccent">@color/color_primary_text</item>
     </style>
 </resources>
