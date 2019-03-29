@@ -79,7 +79,7 @@ class MainActivity : AppCompatActivity(),
         supportFragmentManager.beginTransaction()
             .replace(
                 R.id.constraint_main,
-                MainScreenFragment.newInstance(this, this)
+                MainScreenFragment.newInstance()
             )
             .commit()
     }
