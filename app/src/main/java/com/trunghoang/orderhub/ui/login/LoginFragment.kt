@@ -7,12 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.trunghoang.orderhub.R
 import com.trunghoang.orderhub.model.APIResponse
 import com.trunghoang.orderhub.model.EnumStatus
+import com.trunghoang.orderhub.utils.toast
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_login.view.*
 import javax.inject.Inject
@@ -20,15 +20,12 @@ import javax.inject.Inject
 class LoginFragment : Fragment() {
     companion object {
         @JvmStatic
-        fun newInstance(onLoggedInCallback: OnLoggedInCallback) =
-            LoginFragment().apply {
-                this.mOnLoggedInCallback = onLoggedInCallback
-            }
+        fun newInstance() = LoginFragment()
     }
 
     @Inject
     lateinit var viewModel: LoginViewModel
-    lateinit var mOnLoggedInCallback: OnLoggedInCallback
+    var onLoggedInCallback: OnLoggedInCallback? = null
     private val loginButton: Button? by lazy {
         view?.buttonLogin
     }
@@ -39,6 +36,7 @@ class LoginFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         AndroidSupportInjection.inject(this)
+        onLoggedInCallback = if (context is OnLoggedInCallback) context else null
     }
 
     override fun onCreateView(
@@ -78,28 +76,22 @@ class LoginFragment : Fragment() {
 
     private fun showSuccess(res: APIResponse<String>) {
         showLoading(false)
-        Toast.makeText(
-            this.context,
+        context?.toast(
             getString(
                 if (res.data == APIResponse.NO_VALUE) {
                     R.string.login_fail_text
                 } else {
                     R.string.login_success_text
                 }
-            ),
-            Toast.LENGTH_SHORT
-        ).show()
+            )
+        )
         if (res.data != APIResponse.NO_VALUE)
-            mOnLoggedInCallback.onLoggedIn(res.data)
+            onLoggedInCallback?.onLoggedIn(res.data)
     }
 
     private fun showError(res: APIResponse<String>) {
         showLoading(false)
-        Toast.makeText(
-            this.context,
-            getString(R.string.error_general),
-            Toast.LENGTH_SHORT
-        ).show()
+        context?.toast(getString(R.string.error_general))
     }
 
     interface OnLoggedInCallback {

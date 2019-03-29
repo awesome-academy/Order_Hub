@@ -19,13 +19,13 @@ class MainScreenFragment() : Fragment(), PopupMenu.OnMenuItemClickListener {
         fun newInstance() = MainScreenFragment()
     }
 
-    var mSupportToolbarCallback: SupportToolbarCallback? = null
-    var mLogoutCallback: LogoutCallback? = null
+    var supportToolbarCallback: SupportToolbarCallback? = null
+    var logoutCallback: LogoutCallback? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        mSupportToolbarCallback = if (context is SupportToolbarCallback) context else null
-        mLogoutCallback = if (context is LogoutCallback) context else null
+        supportToolbarCallback = if (context is SupportToolbarCallback) context else null
+        logoutCallback = if (context is LogoutCallback) context else null
     }
 
     override fun onCreateView(
@@ -36,7 +36,7 @@ class MainScreenFragment() : Fragment(), PopupMenu.OnMenuItemClickListener {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        mSupportToolbarCallback?.setToolbar(view.findViewById(R.id.toolbarMainScreen))
+        supportToolbarCallback?.setToolbar(view.findViewById(R.id.toolbarMainScreen))
         view.navigationMainScreen
             ?.getHeaderView(0)
             ?.findViewById<ImageButton>(R.id.buttonSettings)
@@ -45,7 +45,7 @@ class MainScreenFragment() : Fragment(), PopupMenu.OnMenuItemClickListener {
 
     override fun onMenuItemClick(item: MenuItem) = when (item.itemId) {
         R.id.item_log_out -> {
-            mLogoutCallback?.onClickLogout()
+            logoutCallback?.onClickLogout()
             true
         }
         else -> false

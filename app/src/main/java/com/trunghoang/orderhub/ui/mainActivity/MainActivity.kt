@@ -1,38 +1,37 @@
-package com.trunghoang.orderhub.ui
+package com.trunghoang.orderhub.ui.mainActivity
 
-import android.content.Context
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Observer
 import com.trunghoang.orderhub.R
 import com.trunghoang.orderhub.ui.login.LoginFragment
 import com.trunghoang.orderhub.ui.mainScreen.MainScreenFragment
-import com.trunghoang.orderhub.utils.SaveSharedPreferences
+import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.fragment_main_screen.*
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(),
                      MainScreenFragment.SupportToolbarCallback,
                      MainScreenFragment.LogoutCallback,
                      LoginFragment.OnLoggedInCallback {
-    companion object {
-        const val PREF_TOKEN = "com.trunghoang.orderhub.TOKEN"
-    }
-
+    @Inject
+    lateinit var viewModel: MainViewModel
     private val drawerLayout: DrawerLayout by lazy {
         drawerMainScreen
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AndroidInjection.inject(this)
         setContentView(R.layout.activity_main)
-        if (getPreferences(Context.MODE_PRIVATE).contains(PREF_TOKEN)) {
-            openMainScreenFragment()
-        } else {
-            openLoginFragment()
-        }
+        viewModel.token.observe(this, Observer { token ->
+            consumeToken(token)
+        })
+        viewModel.getSharedPref()
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
@@ -44,12 +43,7 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun onLoggedIn(token: String?) {
-        with(getPreferences(Context.MODE_PRIVATE).edit()) {
-            putString(PREF_TOKEN, token)
-            apply()
-        }
-        SaveSharedPreferences.mToken = token
-        openMainScreenFragment()
+        viewModel.saveSharedPref(token)
     }
 
     override fun setToolbar(toolbar: Toolbar) {
@@ -61,17 +55,20 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun onClickLogout() {
-        with(getPreferences(Context.MODE_PRIVATE).edit()) {
-            remove(PREF_TOKEN)
-            apply()
+        viewModel.removeSharedPref()
+    }
+
+    private fun consumeToken(token: String?) {
+        if (token == null) {
+            openLoginFragment()
+        } else {
+            openMainScreenFragment()
         }
-        SaveSharedPreferences.mToken = null
-        openLoginFragment()
     }
 
     private fun openLoginFragment() {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.constraint_main, LoginFragment.newInstance(this))
+            .replace(R.id.constraint_main, LoginFragment.newInstance())
             .commit()
     }
 
