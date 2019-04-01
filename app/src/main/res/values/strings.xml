@@ -20,4 +20,13 @@
     <string name="item_all_orders">Tất cả đơn hàng</string>
     <string name="item_all_products">Tất cả sản phẩm</string>
     <string name="item_log_out">Đăng xuất</string>
+    <string name="item_order_button_products_text">Xem sản phẩm</string>
+    <string name="item_order_button_detail_text">Xem chi tiết</string>
+    <string name="item_order_button_call_text">Gọi điện</string>
+    <string name="sample_date">Thu, 17 Mar</string>
+    <string name="sample_name">Hoàng Quốc Trung</string>
+    <string name="sample_cod">300.000 đ</string>
+    <string name="sample_quantity">x 1</string>
+    <string name="sample_product_name">Giày vans đỏ</string>
+    <string name="sample_price">1.700.000</string>
 </resources>
