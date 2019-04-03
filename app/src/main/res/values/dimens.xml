@@ -31,4 +31,11 @@
     <dimen name="item_order_radius">8dp</dimen>
     <dimen name="item_order_elevation">1dp</dimen>
     <dimen name="order_list_progress_margin_top">10dp</dimen>
+    <dimen name="order_list_floating_add_margin_right">12dp</dimen>
+    <dimen name="order_list_floating_add_margin_bot">12dp</dimen>
+    <dimen name="order_editor_input_padding">4dp</dimen>
+    <dimen name="order_editor_section_padding_vertical">16dp</dimen>
+    <dimen name="order_editor_section_padding_horizontal">12dp</dimen>
+    <dimen name="order_editor_card_margin">16dp</dimen>
+    <dimen name="button_add_more_padding_horizontal">16dp</dimen>
 </resources>

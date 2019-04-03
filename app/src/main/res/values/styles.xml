@@ -65,4 +65,24 @@
     <style name="ItemOrderProduct">
         <item name="android:textColor">@color/color_black_text</item>
     </style>
+
+    <style name="OrderEditorInput">
+        <item name="android:background">@drawable/shape_order_input_field</item>
+        <item name="android:padding">@dimen/order_editor_input_padding</item>
+    </style>
+
+    <style name="OrderEditorCardContent">
+        <item name="android:paddingLeft">@dimen/order_editor_section_padding_horizontal</item>
+        <item name="android:paddingRight">@dimen/order_editor_section_padding_horizontal</item>
+        <item name="android:paddingBottom">@dimen/order_editor_section_padding_vertical</item>
+        <item name="android:paddingTop">@dimen/order_editor_section_padding_vertical</item>
+    </style>
+
+    <style name="ButtonAddMore">
+        <item name="android:paddingLeft">@dimen/button_add_more_padding_horizontal</item>
+        <item name="android:paddingRight">@dimen/button_add_more_padding_horizontal</item>
+        <item name="android:background">@color/color_primary_light</item>
+        <item name="android:textColor">@color/color_primary_text</item>
+    </style>
+
 </resources>
