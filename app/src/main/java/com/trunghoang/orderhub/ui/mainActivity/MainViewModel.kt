@@ -10,8 +10,9 @@ class MainViewModel @Inject constructor(private val context: Context) : ViewMode
         const val PREF_TOKEN = "com.trunghoang.orderhub.TOKEN"
         const val PREF_FILE = "com.trunghoang.orderhub.PREF_FILE"
     }
-
     var token: MutableLiveData<String> = MutableLiveData()
+    var orderStatus: MutableLiveData<Int> = MutableLiveData()
+    var supportToolbar: MutableLiveData<Boolean> = MutableLiveData()
 
     fun getSharedPref() {
         token.value =

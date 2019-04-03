@@ -8,10 +8,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.appcompat.widget.PopupMenu
-import androidx.appcompat.widget.Toolbar
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.trunghoang.orderhub.R
+import com.trunghoang.orderhub.model.OrderStatus
+import com.trunghoang.orderhub.model.OrderStatusDef.WAITING
+import com.trunghoang.orderhub.ui.mainActivity.MainViewModel
+import com.trunghoang.orderhub.ui.orderList.OrderListFragment
+import com.trunghoang.orderhub.utils.getOrderStatusFromId
+import dagger.android.support.AndroidSupportInjection
+import kotlinx.android.synthetic.main.fragment_main_screen.*
 import kotlinx.android.synthetic.main.fragment_main_screen.view.*
+import javax.inject.Inject
 
 class MainScreenFragment() : Fragment(), PopupMenu.OnMenuItemClickListener {
     companion object {
@@ -19,13 +27,35 @@ class MainScreenFragment() : Fragment(), PopupMenu.OnMenuItemClickListener {
         fun newInstance() = MainScreenFragment()
     }
 
-    var supportToolbarCallback: SupportToolbarCallback? = null
-    var logoutCallback: LogoutCallback? = null
+    @Inject
+    lateinit var mainViewModel: MainViewModel
+    private val drawerLayout: DrawerLayout by lazy {
+        drawerMainScreen.apply {
+            addDrawerListener( object: DrawerLayout.DrawerListener {
+                override fun onDrawerStateChanged(newState: Int) {}
+
+                override fun onDrawerSlide(
+                    drawerView: View,
+                    slideOffset: Float
+                ){}
+
+                override fun onDrawerClosed(drawerView: View) {
+                    navigationMainScreen.checkedItem?: return
+                    val orderStatus = context.getOrderStatusFromId(navigationMainScreen.checkedItem!!.itemId)
+                    orderStatus?: return
+                    if ( orderStatus != mainViewModel.orderStatus.value) {
+                        getOrderListFragment(orderStatus)
+                    }
+                }
+
+                override fun onDrawerOpened(drawerView: View) {}
+            })
+        }
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        supportToolbarCallback = if (context is SupportToolbarCallback) context else null
-        logoutCallback = if (context is LogoutCallback) context else null
+        AndroidSupportInjection.inject(this)
     }
 
     override fun onCreateView(
@@ -36,36 +66,48 @@ class MainScreenFragment() : Fragment(), PopupMenu.OnMenuItemClickListener {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        supportToolbarCallback?.setToolbar(view.findViewById(R.id.toolbarMainScreen))
-        view.navigationMainScreen
-            ?.getHeaderView(0)
-            ?.findViewById<ImageButton>(R.id.buttonSettings)
-            ?.setOnClickListener { showSettingsMenu(it) }
+        mainViewModel.supportToolbar.value = true
+        initNavigationDrawer()
+        getOrderListFragment(WAITING)
     }
 
     override fun onMenuItemClick(item: MenuItem) = when (item.itemId) {
         R.id.item_log_out -> {
-            logoutCallback?.onClickLogout()
+            mainViewModel.removeSharedPref()
             true
         }
         else -> false
     }
 
-    private fun showSettingsMenu(view: View) {
-        if (context != null) {
-            PopupMenu(context!!, view).apply {
-                setOnMenuItemClickListener(this@MainScreenFragment)
-                inflate(R.menu.menu_settings)
-                show()
+    private fun initNavigationDrawer() {
+        with(view?.navigationMainScreen) {
+            this?.getHeaderView(0)
+                ?.findViewById<ImageButton>(R.id.buttonSettings)
+                ?.setOnClickListener { showSettingsMenu(it) }
+            this?.setNavigationItemSelectedListener { item ->
+                item.isChecked = true
+                drawerLayout.closeDrawers()
+                true
             }
+            this?.setCheckedItem(R.id.item_status_1)
         }
     }
 
-    interface SupportToolbarCallback {
-        fun setToolbar(toolbar: Toolbar)
+    private fun getOrderListFragment(@OrderStatus status: Int) {
+        childFragmentManager.beginTransaction()
+            .replace(
+                R.id.constraintMainContent,
+                OrderListFragment.newInstance(status)
+            )
+            .commit()
     }
 
-    interface LogoutCallback {
-        fun onClickLogout()
+    private fun showSettingsMenu(view: View) {
+        if (context == null) return
+        PopupMenu(context!!, view).apply {
+            setOnMenuItemClickListener(this@MainScreenFragment)
+            inflate(R.menu.menu_settings)
+            show()
+        }
     }
 }

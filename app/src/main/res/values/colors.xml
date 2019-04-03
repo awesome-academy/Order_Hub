@@ -11,5 +11,5 @@
     <color name="color_accent">#FF5722</color>
     <color name="color_input_background">#FFFFFF</color>
     <color name="color_black_text">#000</color>
-    <color name="color_dim_background">#F8F8F8</color>
+    <color name="color_dim_background">#ECECEC</color>
 </resources>

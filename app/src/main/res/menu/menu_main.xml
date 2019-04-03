@@ -14,30 +14,32 @@
             android:checkable="false"
             android:title="@string/item_order_group_title">
             <menu>
-                <item
-                    android:id="@+id/item_status_1"
-                    android:title="@string/item_status_1" />
-                <item
-                    android:id="@+id/item_status_2"
-                    android:title="@string/item_status_2" />
-                <item
-                    android:id="@+id/item_status_3"
-                    android:title="@string/item_status_3" />
-                <item
-                    android:id="@+id/item_status_4"
-                    android:title="@string/item_status_4" />
-                <item
-                    android:id="@+id/item_status_5"
-                    android:title="@string/item_status_5" />
-                <item
-                    android:id="@+id/item_status_6"
-                    android:title="@string/item_status_6" />
-                <item
-                    android:id="@+id/item_status_7"
-                    android:title="@string/item_status_7" />
-                <item
-                    android:id="@+id/item_status_8"
-                    android:title="@string/item_status_8" />
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/item_status_1"
+                        android:title="@string/item_status_1" />
+                    <item
+                        android:id="@+id/item_status_2"
+                        android:title="@string/item_status_2" />
+                    <item
+                        android:id="@+id/item_status_3"
+                        android:title="@string/item_status_3" />
+                    <item
+                        android:id="@+id/item_status_4"
+                        android:title="@string/item_status_4" />
+                    <item
+                        android:id="@+id/item_status_5"
+                        android:title="@string/item_status_5" />
+                    <item
+                        android:id="@+id/item_status_6"
+                        android:title="@string/item_status_6" />
+                    <item
+                        android:id="@+id/item_status_7"
+                        android:title="@string/item_status_7" />
+                    <item
+                        android:id="@+id/item_status_8"
+                        android:title="@string/item_status_8" />
+                </group>
             </menu>
         </item>
     </group>
