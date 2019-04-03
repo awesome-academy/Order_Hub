@@ -4,9 +4,9 @@ import com.trunghoang.orderhub.ui.login.LoginFragment
 import com.trunghoang.orderhub.ui.login.LoginFragmentModule
 import com.trunghoang.orderhub.ui.login.LoginFragmentScope
 import com.trunghoang.orderhub.ui.mainScreen.MainScreenFragment
+import com.trunghoang.orderhub.ui.mainScreen.MainScreenFragmentScope
+import com.trunghoang.orderhub.ui.mainScreen.MainScreenModule
 import com.trunghoang.orderhub.ui.orderEditor.OrderEditorFragment
-import com.trunghoang.orderhub.ui.orderList.OrderListFragment
-import com.trunghoang.orderhub.ui.orderList.OrderListModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -16,10 +16,8 @@ abstract class FragmentModule {
     @LoginFragmentScope
     abstract fun contributeLoginFragment(): LoginFragment
 
-    @ContributesAndroidInjector(modules = [OrderListModule::class])
-    abstract fun contributeOrderListFragment(): OrderListFragment
-
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [MainScreenModule::class])
+    @MainScreenFragmentScope
     abstract fun contributeMainScreenFragment(): MainScreenFragment
 
     @ContributesAndroidInjector

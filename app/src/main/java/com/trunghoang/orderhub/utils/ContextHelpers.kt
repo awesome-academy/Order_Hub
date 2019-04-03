@@ -12,12 +12,11 @@ import com.trunghoang.orderhub.model.OrderStatusDef.SHIPMENT
 import com.trunghoang.orderhub.model.OrderStatusDef.SHIPPING
 import com.trunghoang.orderhub.model.OrderStatusDef.TAKEN
 import com.trunghoang.orderhub.model.OrderStatusDef.WAITING
-import retrofit2.http.HEAD
 
 fun Context.toast(message: String) =
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 
-fun Context.getOrderStatusText(@OrderStatus status: Int) = when (status) {
+fun Context.getOrderStatusText(@OrderStatus status: Int): String = when (status) {
     WAITING -> getString(R.string.item_status_1)
     SHIPMENT -> getString(R.string.item_status_2)
     TAKEN -> getString(R.string.item_status_3)
@@ -38,5 +37,17 @@ fun Context.getOrderStatusFromId(itemId: Int) = when (itemId) {
     R.id.item_status_6 -> RETURNING
     R.id.item_status_7 -> COD
     R.id.item_status_8 -> COMPLETED
+    else -> null
+}
+
+fun Context.getStringIdFromStatus(@OrderStatus status: Int) = when(status) {
+    WAITING -> R.string.item_status_1
+    SHIPMENT -> R.string.item_status_2
+    TAKEN -> R.string.item_status_3
+    SHIPPING -> R.string.item_status_4
+    RETRY -> R.string.item_status_5
+    RETURNING -> R.string.item_status_6
+    COD -> R.string.item_status_7
+    COMPLETED -> R.string.item_status_8
     else -> null
 }

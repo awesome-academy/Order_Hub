@@ -12,40 +12,41 @@ import com.trunghoang.orderhub.R
 import com.trunghoang.orderhub.data.OrderParams
 import com.trunghoang.orderhub.model.EnumStatus
 import com.trunghoang.orderhub.model.OrderStatus
+import com.trunghoang.orderhub.model.ToolbarInfo
 import com.trunghoang.orderhub.ui.mainActivity.MainViewModel
+import com.trunghoang.orderhub.ui.mainScreen.MainScreenViewModel
+import com.trunghoang.orderhub.utils.EventWrapper
+import com.trunghoang.orderhub.utils.getStringIdFromStatus
 import com.trunghoang.orderhub.utils.toast
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_order_list.*
 import javax.inject.Inject
+import javax.inject.Named
 
 class OrderListFragment : Fragment() {
     companion object {
-        const val ARGUMENT_STATUS = "status"
-
         @JvmStatic
-        fun newInstance(@OrderStatus status: Int) = OrderListFragment()
-            .apply {
-                arguments = Bundle().apply {
-                    putInt(ARGUMENT_STATUS, status)
-                }
-            }
+        fun newInstance() = OrderListFragment()
     }
 
     @Inject
+    @field:Named(MainViewModel.NAME)
     lateinit var mainViewModel: MainViewModel
     @Inject
+    @field:Named(MainScreenViewModel.NAME)
+    lateinit var mainScreenViewModel: MainScreenViewModel
+    @Inject
+    @field:Named(OrderListViewModel.NAME)
     lateinit var orderListViewModel: OrderListViewModel
     @Inject
     lateinit var orderAdapter: OrderAdapter
-    @Inject
-    lateinit var linearLayoutManager: LinearLayoutManager
     private val status by lazy {
-        arguments?.getInt(ARGUMENT_STATUS)
+        mainScreenViewModel.orderStatusEvent.value?.peekContent()
     }
 
     override fun onAttach(context: Context) {
-        super.onAttach(context)
         AndroidSupportInjection.inject(this)
+        super.onAttach(context)
     }
 
     override fun onCreateView(
@@ -56,8 +57,9 @@ class OrderListFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        mainViewModel.orderStatus.value = status
-        getOrders(status)
+        mainScreenViewModel.orderStatusEvent.observe(this, Observer {
+            consumeOrderStatus(it)
+        })
         orderListViewModel.progressStatus.observe(this, Observer {
             consumeOrderLoadingProgress(it)
         })
@@ -65,12 +67,15 @@ class OrderListFragment : Fragment() {
             orderAdapter.submitList(it)
         })
         with(recyclerOrders) {
-            layoutManager = linearLayoutManager
+            layoutManager = LinearLayoutManager(this@OrderListFragment.context)
             adapter = orderAdapter
         }
         swipeRefresh.setOnRefreshListener {
             getOrders(status)
             swipeRefresh.isRefreshing = false
+        }
+        floatNewOrder.setOnClickListener {
+            mainViewModel.orderEditorEvent.value = EventWrapper(MainViewModel.NO_STRING)
         }
     }
 
@@ -83,6 +88,13 @@ class OrderListFragment : Fragment() {
                 showNoResult(true)
                 context?.toast(getString(R.string.error_general))
             }
+        }
+    }
+
+    private fun consumeOrderStatus(orderStatusEvent: EventWrapper<Int>?) {
+        orderStatusEvent?.peekContent()?.apply {
+            getOrders(this)
+            addToolbar(this)
         }
     }
 
@@ -107,6 +119,16 @@ class OrderListFragment : Fragment() {
     private fun getOrders(@OrderStatus status: Int?) {
         status?.let {
             orderListViewModel.getOrders(OrderParams<Long>(status = it))
+        }
+    }
+
+    private fun addToolbar(@OrderStatus status: Int?) {
+        status?.let {
+            mainViewModel.toolbarInfo.value = ToolbarInfo(
+                R.id.toolbarMainScreen,
+                R.drawable.ic_menu_black_24dp,
+                context?.getStringIdFromStatus(it)
+            )
         }
     }
 }
