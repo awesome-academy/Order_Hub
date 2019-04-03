@@ -50,6 +50,7 @@ dependencies {
     kapt 'com.google.dagger:dagger-compiler:2.17'
     implementation 'com.google.firebase:firebase-core:16.0.8'
     implementation 'com.google.firebase:firebase-firestore:18.2.0'
+    implementation 'androidx.paging:paging-runtime:2.1.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.2-alpha02'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha02'
