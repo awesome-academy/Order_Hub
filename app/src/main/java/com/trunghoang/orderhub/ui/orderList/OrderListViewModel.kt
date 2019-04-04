@@ -17,6 +17,9 @@ import javax.inject.Inject
 
 class OrderListViewModel @Inject constructor(private val db: FirebaseFirestore) :
     ViewModel() {
+    companion object {
+        const val NAME = "OrderListViewModel"
+    }
     private val compositeDisposable = CompositeDisposable()
     private var dataSourceFactoryLiveData =
         MutableLiveData<PagedDataSourceFactory<*>>()

@@ -1,21 +1,25 @@
 package com.trunghoang.orderhub.ui.orderList
 
-import android.content.Context
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.trunghoang.orderhub.utils.ViewModelFactory
 import dagger.Module
 import dagger.Provides
+import javax.inject.Named
+import javax.inject.Scope
 
 @Module
 class OrderListModule {
     @Provides
+    @OrderListFragmentScope
+    @Named(OrderListViewModel.NAME)
     fun provideViewModel(
         orderListFragment: OrderListFragment,
         viewModelFactory: ViewModelFactory
     ) = ViewModelProviders.of(orderListFragment, viewModelFactory).get(
         OrderListViewModel::class.java
     )
-    @Provides
-    fun provideLinearLayout(context: Context) = LinearLayoutManager(context)
 }
+
+@Scope
+@Retention
+annotation class OrderListFragmentScope

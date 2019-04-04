@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.trunghoang.orderhub.ui.login.LoginViewModel
 import com.trunghoang.orderhub.ui.mainActivity.MainViewModel
+import com.trunghoang.orderhub.ui.mainScreen.MainScreenViewModel
 import com.trunghoang.orderhub.ui.orderList.OrderListViewModel
 import com.trunghoang.orderhub.utils.ViewModelFactory
 import com.trunghoang.orderhub.utils.ViewModelKey
@@ -28,6 +29,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(OrderListViewModel::class)
     abstract fun bindOrderListViewModel(orderListViewModel: OrderListViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MainScreenViewModel::class)
+    abstract fun bindMainScreenViewModel(mainScreenViewModel: MainScreenViewModel): ViewModel
 
     @Binds
     @Singleton
