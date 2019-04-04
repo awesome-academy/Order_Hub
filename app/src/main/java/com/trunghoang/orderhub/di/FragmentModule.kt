@@ -15,6 +15,7 @@ import com.trunghoang.orderhub.ui.orderDetail.OrderDetailScope
 import com.trunghoang.orderhub.ui.orderEditor.OrderEditorFragment
 import com.trunghoang.orderhub.ui.orderEditor.OrderEditorModule
 import com.trunghoang.orderhub.ui.orderEditor.OrderEditorScope
+import com.trunghoang.orderhub.ui.orderListSelection.OrderListSelectionFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -39,4 +40,7 @@ abstract class FragmentModule {
     @ContributesAndroidInjector(modules = [OrderDetailModule::class])
     @OrderDetailScope
     abstract fun contributeOrderDetailFragment(): OrderDetailFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeOrderListSelectionFragment(): OrderListSelectionFragment
 }

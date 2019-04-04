@@ -16,6 +16,7 @@ import com.trunghoang.orderhub.ui.login.LoginFragment
 import com.trunghoang.orderhub.ui.mainScreen.MainScreenFragment
 import com.trunghoang.orderhub.ui.orderDetail.OrderDetailFragment
 import com.trunghoang.orderhub.ui.orderEditor.OrderEditorFragment
+import com.trunghoang.orderhub.ui.orderListSelection.OrderListSelectionFragment
 import com.trunghoang.orderhub.utils.EventWrapper
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
@@ -51,6 +52,9 @@ class MainActivity : AppCompatActivity(),
             orderEditorEvent.observe(this@MainActivity, Observer {
                 consumeOrderEditor(it)
             })
+            orderListSelectionEvent.observe(this@MainActivity, Observer {
+                consumeOrderListSelection(it)
+            })
         }
     }
 
@@ -67,6 +71,7 @@ class MainActivity : AppCompatActivity(),
             when (viewModel.toolbarInfo.value?.id) {
                 R.id.toolbarMainScreen -> drawerLayout.openDrawer(GravityCompat.START)
                 R.id.toolbarOrderEditor -> supportFragmentManager.popBackStack()
+                R.id.toolbarOrderListSelection -> supportFragmentManager.popBackStack()
             }
             true
         }
@@ -109,6 +114,16 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
+    private fun consumeOrderListSelection(event: EventWrapper<Boolean>?) {
+        event?.peekContent()?.let {
+            if (it) {
+                event.getContentIfNotHandled()?.let {
+                    openOrderSelectionFragment()
+                }
+            }
+        }
+    }
+
     private fun openLoginFragment() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.constraint_main, LoginFragment.newInstance())
@@ -129,6 +144,16 @@ class MainActivity : AppCompatActivity(),
             .replace(
                 R.id.constraint_main,
                 OrderEditorFragment.newInstance(id)
+            )
+            .addToBackStack(null)
+            .commit()
+    }
+
+    private fun openOrderSelectionFragment() {
+        supportFragmentManager.beginTransaction()
+            .add(
+                R.id.constraint_main,
+                OrderListSelectionFragment.newInstance()
             )
             .addToBackStack(null)
             .commit()

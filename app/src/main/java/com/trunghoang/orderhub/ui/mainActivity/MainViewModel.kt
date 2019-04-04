@@ -19,6 +19,10 @@ class MainViewModel @Inject constructor(private val context: Context) :
     var tokenEvent: MutableLiveData<EventWrapper<String>> = MutableLiveData()
     var orderEditorEvent: MutableLiveData<EventWrapper<EditorEvent>> = MutableLiveData()
     var toolbarInfo = MutableLiveData<ToolbarInfo>()
+    var orderListSelectionEvent= MutableLiveData<EventWrapper<Boolean>>().apply {
+        value = EventWrapper(false)
+    }
+    var bottomBarHeight = MutableLiveData<Int>()
 
     init {
         getSharedPref()

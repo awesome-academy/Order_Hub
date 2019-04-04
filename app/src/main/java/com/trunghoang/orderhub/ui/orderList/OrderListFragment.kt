@@ -7,6 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.recyclerview.selection.SelectionPredicates
+import androidx.recyclerview.selection.SelectionTracker
+import androidx.recyclerview.selection.StorageStrategy
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.trunghoang.orderhub.R
 import com.trunghoang.orderhub.data.OrderParams
@@ -14,6 +17,8 @@ import com.trunghoang.orderhub.model.*
 import com.trunghoang.orderhub.ui.mainActivity.MainViewModel
 import com.trunghoang.orderhub.ui.mainScreen.MainScreenViewModel
 import com.trunghoang.orderhub.ui.orderEditor.InputProductAdapter
+import com.trunghoang.orderhub.ui.orderList.recyclerViewSelection.OrderDetailsLookup
+import com.trunghoang.orderhub.ui.orderList.recyclerViewSelection.OrderKeyProvider
 import com.trunghoang.orderhub.utils.EventWrapper
 import com.trunghoang.orderhub.utils.getStringIdFromStatus
 import com.trunghoang.orderhub.utils.hideViewOnScrollUp
@@ -26,6 +31,7 @@ import javax.inject.Named
 
 class OrderListFragment : Fragment() {
     companion object {
+        const val SELECTION_ID = "OrderList"
         @JvmStatic
         fun newInstance() = OrderListFragment()
     }
@@ -60,26 +66,19 @@ class OrderListFragment : Fragment() {
         mainScreenViewModel.orderStatusEvent.observe(this, Observer {
             consumeOrderStatus(it)
         })
+        mainViewModel.orderListSelectionEvent.observe(this, Observer {
+            consumeOrderListSelection(it)
+        })
+        mainViewModel.bottomBarHeight.observe(this, Observer {
+            consumeBottomBarHeight(it)
+        })
         orderListViewModel.progressStatus.observe(this, Observer {
             consumeOrderLoadingProgress(it)
         })
         orderListViewModel.ordersPagedList.observe(this, Observer {
             orderAdapter?.submitList(it)
         })
-        with(recyclerOrders) {
-            layoutManager = LinearLayoutManager(this@OrderListFragment.context)
-            orderAdapter = OrderAdapter(
-                {
-                    mainViewModel.orderEditorEvent.value =
-                        EventWrapper(EditorEvent(it.id, false))
-                },
-                { itemView, order ->
-                    setProductsRecyclerView(itemView, order)
-                }
-            )
-            adapter = orderAdapter
-            hideViewOnScrollUp(floatNewOrder)
-        }
+        setRecyclerOrdersView()
         swipeRefresh.setOnRefreshListener {
             getOrders(status)
             swipeRefresh.isRefreshing = false
@@ -106,6 +105,30 @@ class OrderListFragment : Fragment() {
         orderStatusEvent?.peekContent()?.apply {
             getOrders(this)
             addToolbar(this)
+        }
+    }
+
+    private fun consumeOrderListSelection(event: EventWrapper<Boolean>?) {
+        event?.peekContent()?.let {
+            if (!it) {
+                event.getContentIfNotHandled()?.let {
+                    orderAdapter?.tracker?.clearSelection()
+                    recyclerOrders.hideViewOnScrollUp(floatNewOrder)
+                }
+            }
+        }
+    }
+
+    private fun consumeBottomBarHeight(height: Int?) {
+        height?.let {
+            constraintOrderList.apply {
+                setPadding(
+                    paddingLeft,
+                    paddingTop,
+                    paddingRight,
+                    it
+                )
+            }
         }
     }
 
@@ -150,6 +173,52 @@ class OrderListFragment : Fragment() {
                 adapter = null
                 layoutManager = null
             }
+        }
+    }
+
+    private fun setRecyclerOrdersView() {
+        with(recyclerOrders) {
+            layoutManager = LinearLayoutManager(this@OrderListFragment.context)
+            orderAdapter = OrderAdapter(
+                { order ->
+                    mainViewModel.orderListSelectionEvent.value?.peekContent()
+                        ?.let {
+                            if (!it) {
+                                mainViewModel.orderEditorEvent.value =
+                                    EventWrapper(EditorEvent(order.id, false))
+                            }
+                        }
+                },
+                { itemView, order ->
+                    mainViewModel.orderListSelectionEvent.value?.peekContent()
+                        ?.let {
+                            if (!it) {
+                                setProductsRecyclerView(itemView, order)
+                            }
+                        }
+                },
+                {
+                    mainViewModel.orderListSelectionEvent.value!!.peekContent()
+                        .let {
+                            if (!it) {
+                                mainViewModel.orderListSelectionEvent.value =
+                                    EventWrapper(true)
+                                recyclerOrders.clearOnScrollListeners()
+                                floatNewOrder.visibility = View.GONE
+                            }
+                        }
+                }
+            )
+            adapter = orderAdapter
+            orderAdapter?.tracker = SelectionTracker.Builder<String>(
+                SELECTION_ID,
+                this,
+                OrderKeyProvider(orderAdapter!!),
+                OrderDetailsLookup(this),
+                StorageStrategy.createStringStorage()
+            ).withSelectionPredicate(
+                SelectionPredicates.createSelectAnything()
+            ).build()
         }
     }
 
