@@ -78,6 +78,10 @@
         <item name="android:paddingTop">@dimen/order_editor_section_padding_vertical</item>
     </style>
 
+    <style name="OrderEditorSectionTitle">
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="ButtonAddMore">
         <item name="android:paddingLeft">@dimen/button_add_more_padding_horizontal</item>
         <item name="android:paddingRight">@dimen/button_add_more_padding_horizontal</item>

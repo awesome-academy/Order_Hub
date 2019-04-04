@@ -9,13 +9,11 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.trunghoang.orderhub.R
-import com.trunghoang.orderhub.model.OrderStatus
 import com.trunghoang.orderhub.model.ToolbarInfo
 import com.trunghoang.orderhub.ui.login.LoginFragment
 import com.trunghoang.orderhub.ui.mainScreen.MainScreenFragment
 import com.trunghoang.orderhub.ui.orderEditor.OrderEditorFragment
 import com.trunghoang.orderhub.utils.EventWrapper
-import com.trunghoang.orderhub.utils.getOrderStatusText
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
@@ -98,10 +96,6 @@ class MainActivity : AppCompatActivity(),
         orderEditorEvent?.getContentIfNotHandled()?.apply {
             openOrderEditorFragment(this)
         }
-    }
-
-    private fun consumeOrderStatus(@OrderStatus status: Int) {
-        supportActionBar?.title = applicationContext.getOrderStatusText(status)
     }
 
     private fun openLoginFragment() {
