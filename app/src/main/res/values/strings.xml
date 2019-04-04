@@ -30,4 +30,6 @@
     <string name="sample_product_name">Giày vans đỏ</string>
     <string name="sample_price">1.700.000</string>
     <string name="notice_no_order">Hiện tại không có đơn hàng ở trạng thái này</string>
+    <string name="menu_item_save">Lưu</string>
+    <string name="order_editor_new_order_title">Tạo đơn mới</string>
 </resources>
