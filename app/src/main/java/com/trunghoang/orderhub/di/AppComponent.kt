@@ -16,7 +16,8 @@ import javax.inject.Singleton
         ActivityModule::class,
         ViewModelModule::class,
         AuthRemoteModule::class,
-        FirebaseModule::class]
+        FirebaseModule::class,
+        GHNApiModule::class]
 )
 interface AppComponent {
     fun inject(appController: AppController)

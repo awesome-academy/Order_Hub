@@ -7,6 +7,8 @@ import com.trunghoang.orderhub.ui.mainScreen.MainScreenFragment
 import com.trunghoang.orderhub.ui.mainScreen.MainScreenFragmentScope
 import com.trunghoang.orderhub.ui.mainScreen.MainScreenModule
 import com.trunghoang.orderhub.ui.orderEditor.OrderEditorFragment
+import com.trunghoang.orderhub.ui.orderEditor.OrderEditorModule
+import com.trunghoang.orderhub.ui.orderEditor.OrderEditorScope
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -20,6 +22,7 @@ abstract class FragmentModule {
     @MainScreenFragmentScope
     abstract fun contributeMainScreenFragment(): MainScreenFragment
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [OrderEditorModule::class])
+    @OrderEditorScope
     abstract fun contributeOrderEditorFragment(): OrderEditorFragment
 }
