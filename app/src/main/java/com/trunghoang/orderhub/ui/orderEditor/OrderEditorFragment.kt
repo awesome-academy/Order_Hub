@@ -74,27 +74,30 @@ class OrderEditorFragment : Fragment() {
         when (districtResponse.status) {
             EnumStatus.LOADING -> {
             }
-            EnumStatus.SUCCESS -> {
-                context?.let {
-                    districtResponse.data?.let { data ->
-                        districtsAdapter = DistrictsAdapter(
-                            it,
-                            R.layout.item_suggest_list,
-                            data
-                        )
-                        autoCompDistrict.setAdapter(districtsAdapter)
-                        autoCompDistrict.setOnItemClickListener { parent, view, position, id ->
-                            parent.getItemAtPosition(position)?.let {
-                                orderEditorViewModel.district.value =
-                                    it as District
-                            }
-                        }
-                    }
-                }
-            }
+            EnumStatus.SUCCESS ->
+                setAutoCompDistrict(districtResponse)
             EnumStatus.ERROR -> {
                 districtResponse.error?.printStackTrace()
                 context?.toast(getString(R.string.error_general))
+            }
+        }
+    }
+
+    private fun setAutoCompDistrict(districtResponse: APIResponse<List<District>>) {
+        context?.let {
+            districtResponse.data?.let { data ->
+                districtsAdapter = DistrictsAdapter(
+                    it,
+                    R.layout.item_suggest_list,
+                    data
+                )
+                autoCompDistrict.setAdapter(districtsAdapter)
+                autoCompDistrict.setOnItemClickListener { parent, view, position, id ->
+                    parent.getItemAtPosition(position)?.let {
+                        orderEditorViewModel.district.value =
+                            it as District
+                    }
+                }
             }
         }
     }

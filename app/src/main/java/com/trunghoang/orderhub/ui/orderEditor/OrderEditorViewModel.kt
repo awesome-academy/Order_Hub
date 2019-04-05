@@ -6,7 +6,6 @@ import com.trunghoang.orderhub.data.ShippingInfoRepository
 import com.trunghoang.orderhub.model.APIResponse
 import com.trunghoang.orderhub.model.District
 import com.trunghoang.orderhub.model.GHNApiRequest
-import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
 class OrderEditorViewModel @Inject constructor(
@@ -15,19 +14,11 @@ class OrderEditorViewModel @Inject constructor(
     companion object {
         const val NAME = "OrderEditorViewModel"
     }
-    var compositeDisposable = CompositeDisposable()
+
     var districtsResponse = MutableLiveData<APIResponse<List<District>>>()
     var district = MutableLiveData<District>()
 
-    override fun onCleared() {
-        compositeDisposable.clear()
-    }
-
     fun getDistricts(districtsRequest: GHNApiRequest.Districts) {
-        shippingInfoRepo.getDistricts(
-            districtsRequest,
-            districtsResponse,
-            compositeDisposable
-        )
+        districtsResponse = shippingInfoRepo.getDistricts(districtsRequest)
     }
 }
