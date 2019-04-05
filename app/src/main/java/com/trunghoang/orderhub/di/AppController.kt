@@ -1,14 +1,12 @@
 package com.trunghoang.orderhub.di
 
 import android.app.Activity
-import android.app.Application
-import androidx.fragment.app.Fragment
+import androidx.multidex.MultiDexApplication
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
-import dagger.android.support.HasSupportFragmentInjector
 import javax.inject.Inject
 
-class AppController : Application(), HasActivityInjector {
+class AppController : MultiDexApplication(), HasActivityInjector {
     @Inject
     lateinit var dispatchingActivityInjector: DispatchingAndroidInjector<Activity>
 

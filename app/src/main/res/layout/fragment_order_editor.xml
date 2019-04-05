@@ -18,7 +18,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:menu="@menu/menu_editor"/>
+        app:menu="@menu/menu_editor" />
 
     <ScrollView
         android:layout_width="0dp"
@@ -49,17 +49,22 @@
 
                     <TextView
                         android:id="@+id/textReceiver"
+                        style="@style/OrderEditorSectionTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Người nhận:"
+                        android:layout_marginEnd="@dimen/order_editor_title_margin_right"
+                        android:layout_marginRight="@dimen/order_editor_title_margin_right"
+                        android:text="@string/order_editor_title_receiver"
                         app:layout_constraintBaseline_toBaselineOf="@+id/editReceiver"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+                        app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent" />
 
                     <TextView
                         android:id="@+id/textMobile"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Số điện thoại:"
+                        android:text="@string/order_editor_title_mobile"
                         app:layout_constraintBaseline_toBaselineOf="@+id/editMobile"
                         app:layout_constraintEnd_toEndOf="@+id/textReceiver"
                         app:layout_constraintHorizontal_bias="0.0"
@@ -69,18 +74,8 @@
                         android:id="@+id/textAddress"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Địa chỉ:"
+                        android:text="@string/order_editor_title_address"
                         app:layout_constraintBaseline_toBaselineOf="@+id/editAddress"
-                        app:layout_constraintEnd_toEndOf="@+id/textReceiver"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="@+id/textReceiver" />
-
-                    <TextView
-                        android:id="@+id/textCity"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Tỉnh/thành:"
-                        app:layout_constraintBaseline_toBaselineOf="@+id/autoCompCity"
                         app:layout_constraintEnd_toEndOf="@+id/textReceiver"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="@+id/textReceiver" />
@@ -89,7 +84,7 @@
                         android:id="@+id/textDistrict"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Quận/huyện:"
+                        android:text="@string/order_editor_title_district"
                         app:layout_constraintBaseline_toBaselineOf="@+id/autoCompDistrict"
                         app:layout_constraintEnd_toEndOf="@+id/textReceiver"
                         app:layout_constraintHorizontal_bias="0.0"
@@ -99,7 +94,7 @@
                         android:id="@+id/textWard"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Phường/xã:"
+                        android:text="@string/order_editor_title_ward"
                         app:layout_constraintBaseline_toBaselineOf="@+id/autoCompWard"
                         app:layout_constraintEnd_toEndOf="@+id/textReceiver"
                         app:layout_constraintHorizontal_bias="0.0"
@@ -107,11 +102,10 @@
 
                     <EditText
                         android:id="@+id/editReceiver"
-                        style="@style/OrderEditorInput"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginLeft="8dp"
+                        android:layout_marginStart="@dimen/order_editor_input_margin_left"
+                        android:layout_marginLeft="@dimen/order_editor_input_margin_left"
                         android:ems="10"
                         android:inputType="textPersonName"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -120,10 +114,9 @@
 
                     <EditText
                         android:id="@+id/editMobile"
-                        style="@style/OrderEditorInput"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="@dimen/order_editor_input_margin_top"
                         android:ems="10"
                         android:inputType="phone"
                         app:layout_constraintEnd_toEndOf="@+id/editReceiver"
@@ -132,10 +125,9 @@
 
                     <EditText
                         android:id="@+id/editAddress"
-                        style="@style/OrderEditorInput"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="@dimen/order_editor_input_margin_top"
                         android:ems="10"
                         android:inputType="text"
                         app:layout_constraintEnd_toEndOf="@+id/editReceiver"
@@ -148,39 +140,29 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        app:layout_constraintGuide_percent="0.3" />
-
-                    <AutoCompleteTextView
-                        android:id="@+id/autoCompCity"
-                        style="@style/OrderEditorInput"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        app:layout_constraintEnd_toEndOf="@+id/editReceiver"
-                        app:layout_constraintStart_toStartOf="@+id/editReceiver"
-                        app:layout_constraintTop_toBottomOf="@+id/editAddress" />
+                        app:layout_constraintGuide_percent="0.4" />
 
                     <AutoCompleteTextView
                         android:id="@+id/autoCompDistrict"
-                        style="@style/OrderEditorInput"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="@dimen/order_editor_input_margin_top"
                         app:layout_constraintEnd_toEndOf="@+id/editReceiver"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="@+id/editReceiver"
-                        app:layout_constraintTop_toBottomOf="@+id/autoCompCity" />
+                        app:layout_constraintTop_toBottomOf="@+id/editAddress"
+                        android:completionThreshold="0"/>
 
                     <AutoCompleteTextView
                         android:id="@+id/autoCompWard"
-                        style="@style/OrderEditorInput"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="@dimen/order_editor_input_margin_top"
                         app:layout_constraintEnd_toEndOf="@+id/editReceiver"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="@+id/editReceiver"
-                        app:layout_constraintTop_toBottomOf="@+id/autoCompDistrict" />
+                        app:layout_constraintTop_toBottomOf="@+id/autoCompDistrict"
+                        android:completionThreshold="0"/>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
@@ -190,6 +172,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/order_editor_card_margin"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -202,9 +185,10 @@
 
                     <TextView
                         android:id="@+id/textOrderDetailTitle"
+                        style="@style/OrderEditorSectionTitle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Chi tiết đơn hàng"
+                        android:text="@string/order_editor_title_order_detail"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -213,10 +197,10 @@
                         style="@style/ButtonAddMore"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="@dimen/order_editor_button_margin_top"
                         android:drawableStart="@drawable/ic_add"
                         android:drawableLeft="@drawable/ic_add"
-                        android:text="Thêm sản phẩm"
+                        android:text="@string/order_editor_title_more_product"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textOrderDetailTitle" />
@@ -225,7 +209,6 @@
                         android:id="@+id/divider3"
                         android:layout_width="0dp"
                         android:layout_height="1dp"
-                        android:layout_marginTop="8dp"
                         android:background="?android:attr/listDivider"
                         app:layout_constraintEnd_toEndOf="@+id/buttonAddProduct"
                         app:layout_constraintStart_toStartOf="@+id/buttonAddProduct"
@@ -236,40 +219,47 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        app:layout_constraintGuide_percent="0.3" />
+                        app:layout_constraintGuide_percent="0.4" />
 
                     <TextView
                         android:id="@+id/textShipCost"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Phí vận chuyển:"
+                        android:layout_marginEnd="@dimen/order_editor_title_margin_right"
+                        android:layout_marginRight="@dimen/order_editor_title_margin_right"
+                        android:text="@string/order_editor_title_ship_cost"
                         app:layout_constraintBaseline_toBaselineOf="@+id/editShipCost"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+                        app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="@+id/divider3" />
 
                     <TextView
                         android:id="@+id/textDiscount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Giảm giá:"
+                        android:text="@string/order_editor_title_discount"
                         app:layout_constraintBaseline_toBaselineOf="@+id/editDiscount"
+                        app:layout_constraintEnd_toEndOf="@+id/textShipCost"
+                        app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="@+id/textShipCost" />
 
                     <TextView
                         android:id="@+id/textTotal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Tổng cộng:"
+                        android:text="@string/order_editor_title_total"
                         app:layout_constraintBaseline_toBaselineOf="@+id/editTotal"
+                        app:layout_constraintEnd_toEndOf="@+id/textShipCost"
+                        app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="@+id/textDiscount" />
 
                     <EditText
                         android:id="@+id/editShipCost"
-                        style="@style/OrderEditorInput"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginStart="@dimen/order_editor_input_margin_left"
+                        android:layout_marginLeft="@dimen/order_editor_input_margin_left"
+                        android:layout_marginTop="@dimen/order_editor_cost_section_margin_top"
                         android:ems="10"
                         android:inputType="number"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -278,10 +268,9 @@
 
                     <EditText
                         android:id="@+id/editDiscount"
-                        style="@style/OrderEditorInput"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="@dimen/order_editor_input_margin_top"
                         android:ems="10"
                         android:inputType="number"
                         app:layout_constraintEnd_toEndOf="@+id/editShipCost"
@@ -290,10 +279,9 @@
 
                     <EditText
                         android:id="@+id/editTotal"
-                        style="@style/OrderEditorInput"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="@dimen/order_editor_input_margin_top"
                         android:ems="10"
                         android:inputType="number"
                         app:layout_constraintEnd_toEndOf="@+id/editShipCost"

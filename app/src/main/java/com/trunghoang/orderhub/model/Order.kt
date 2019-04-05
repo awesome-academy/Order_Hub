@@ -12,5 +12,7 @@ data class Order(
     var cod: Long = 0,
     var address: String = "",
     var status: Int = 0,
-    var products: List<Product> = ArrayList()
+    var products: List<Product> = ArrayList(),
+    var district: District? = null,
+    var ward: Ward? = null
 )
