@@ -17,9 +17,11 @@ import com.trunghoang.orderhub.ui.EditorFragment
 import com.trunghoang.orderhub.ui.inputProduct.InputProductFragment
 import com.trunghoang.orderhub.ui.mainActivity.MainViewModel
 import com.trunghoang.orderhub.utils.EventWrapper
+import com.trunghoang.orderhub.utils.hideViewOnScrollUp
 import com.trunghoang.orderhub.utils.toast
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_order_editor.*
+import java.sql.Ref
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -27,12 +29,15 @@ class OrderEditorFragment : Fragment(), EditorFragment,
                             InputProductFragment.OnProductAddedListener {
     companion object {
         private const val ARGUMENT_ID = "ARGUMENT_ID"
+        private const val ARGUMENT_EDIT_MODE = "ARGUMENT_EDIT_MODE"
         @JvmStatic
-        fun newInstance(id: String) = OrderEditorFragment().apply {
-            arguments = Bundle().apply {
-                putString(ARGUMENT_ID, id)
+        fun newInstance(id: String, editMode: Boolean) =
+            OrderEditorFragment().apply {
+                arguments = Bundle().apply {
+                    putString(ARGUMENT_ID, id)
+                    putBoolean(ARGUMENT_EDIT_MODE, editMode)
+                }
             }
-        }
     }
 
     @Inject
@@ -43,6 +48,9 @@ class OrderEditorFragment : Fragment(), EditorFragment,
     lateinit var orderEditorViewModel: OrderEditorViewModel
     private val orderId: String? by lazy {
         arguments?.getString(ARGUMENT_ID)
+    }
+    private val editMode: Boolean? by lazy {
+        arguments?.getBoolean(ARGUMENT_EDIT_MODE)
     }
     private var districtsAdapter: DistrictsAdapter? = null
     private var wardsAdapter: WardsAdapter? = null
@@ -69,7 +77,6 @@ class OrderEditorFragment : Fragment(), EditorFragment,
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        addToolbar()
         buttonAddProduct.setOnClickListener {
             addInputProductFragment()
         }
@@ -87,10 +94,23 @@ class OrderEditorFragment : Fragment(), EditorFragment,
         mainViewModel.tokenEvent.observe(this, Observer {
             consumeToken(it)
         })
-        orderId?.let {
-            if (it.isNotBlank()) orderEditorViewModel.getOrder(it)
+        orderId?.let { id ->
+            if (id.isNotBlank()) {
+                orderEditorViewModel.getOrder(id)
+                buttonEdit?.setOnClickListener { _ ->
+                    mainViewModel.orderEditorEvent.value = EventWrapper(EditorEvent(id, true))
+                }
+            }
         }
         with(orderEditorViewModel) {
+            this@OrderEditorFragment.editMode?.let {
+                editMode.value = it
+            }
+            editMode.observe(this@OrderEditorFragment, Observer {
+                addToolbar(it)
+                productsAdapter?.editMode = it
+                if (!it) scrollContainer.hideViewOnScrollUp(buttonEdit)
+            })
             orderResponse.observe(this@OrderEditorFragment, Observer {
                 consumeOrder(it)
             })
@@ -308,13 +328,26 @@ class OrderEditorFragment : Fragment(), EditorFragment,
         }
     }
 
-    private fun addToolbar() {
-        mainViewModel.toolbarInfo.value = ToolbarInfo(
-            R.id.toolbarOrderEditor,
-            R.drawable.ic_close,
-            R.string.order_editor_new_order_title,
-            R.menu.menu_editor
-        )
+    private fun addToolbar(editMode: Boolean) {
+        mainViewModel.toolbarInfo.value =
+            if (editMode) {
+                ToolbarInfo(
+                    R.id.toolbarOrderEditor,
+                    R.drawable.ic_close,
+                    if (orderId.isNullOrBlank()) {
+                        R.string.order_editor_new_order_title
+                    } else {
+                        R.string.order_editor_edit_order_title
+                    },
+                    R.menu.menu_editor
+                )
+            } else {
+                ToolbarInfo(
+                    R.id.toolbarOrderEditor,
+                    R.drawable.ic_back,
+                    R.string.order_editor_detail_title
+                )
+            }
     }
 
     private fun addInputProductFragment() {

@@ -12,7 +12,10 @@ import com.trunghoang.orderhub.model.Order
 import com.trunghoang.orderhub.utils.FormatUtils
 import kotlinx.android.synthetic.main.item_order_list.view.*
 
-class OrderAdapter(private val onDetailClick: (order: Order) -> Unit) :
+class OrderAdapter(
+    private val onDetailClick: (order: Order) -> Unit,
+    private val onProductsClick: (itemView: View, order: Order) -> Unit
+) :
     PagedListAdapter<Order, OrderAdapter.OrderViewHolder>(OrderDiffCallback) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -20,7 +23,7 @@ class OrderAdapter(private val onDetailClick: (order: Order) -> Unit) :
     ) = LayoutInflater.from(parent.context)
         .inflate(R.layout.item_order_list, parent, false)
         .let {
-            OrderViewHolder(it, onDetailClick)
+            OrderViewHolder(it, onDetailClick, onProductsClick)
         }
 
     override fun onBindViewHolder(holder: OrderViewHolder, position: Int) {
@@ -31,7 +34,8 @@ class OrderAdapter(private val onDetailClick: (order: Order) -> Unit) :
 
     class OrderViewHolder(
         itemView: View,
-        val onDetailClick: (order: Order) -> Unit
+        val onDetailClick: (order: Order) -> Unit,
+        val onProductsClick: (view: View, order: Order) -> Unit
     ) : RecyclerView.ViewHolder(itemView) {
         fun bindView(order: Order) {
             with(itemView) {
@@ -44,6 +48,9 @@ class OrderAdapter(private val onDetailClick: (order: Order) -> Unit) :
                 textCod.text = FormatUtils.longToString(order.cod)
                 buttonDetail.setOnClickListener {
                     onDetailClick(order)
+                }
+                buttonProducts.setOnClickListener {
+                    onProductsClick(itemView, order)
                 }
             }
         }

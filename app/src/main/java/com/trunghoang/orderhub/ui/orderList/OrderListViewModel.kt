@@ -65,8 +65,4 @@ class OrderListViewModel @Inject constructor(private val db: FirebaseFirestore) 
             else -> null
         }
     }
-
-    fun refresh() {
-        dataSourceFactoryLiveData.value?.dataSourceLiveData?.value?.invalidate()
-    }
 }

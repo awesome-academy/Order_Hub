@@ -14,6 +14,7 @@ class InputProductAdapter(
     private val onRemoveClick: (position: Int) -> Unit
 ) : RecyclerView.Adapter<InputProductAdapter.ProductViewHolder>() {
     private var products = ArrayList<Product>()
+    var editMode: Boolean = false
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -27,7 +28,7 @@ class InputProductAdapter(
     override fun getItemCount() = products.size
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
-        holder.onBind(products[position])
+        holder.onBind(products[position], editMode)
     }
 
     fun setData(products: List<Product>) {
@@ -40,14 +41,14 @@ class InputProductAdapter(
         itemView: View,
         val onRemoveClick: (position: Int) -> Unit
     ) : RecyclerView.ViewHolder(itemView) {
-        fun onBind(product: Product) {
+        fun onBind(product: Product, editMode: Boolean) {
             itemView.textQuantity.text = FormatUtils.longToString(product.quantity)
             itemView.textName.text = product.name
             itemView.textPrice.text = FormatUtils.longToString(product.price)
             Glide.with(itemView.context)
                 .load(product.photo)
                 .into(itemView.imageProductPhoto)
-            itemView.buttonRemove.apply {
+            if (editMode) itemView.buttonRemove.apply {
                 visibility = View.VISIBLE
                 setOnClickListener {
                     onRemoveClick(adapterPosition)

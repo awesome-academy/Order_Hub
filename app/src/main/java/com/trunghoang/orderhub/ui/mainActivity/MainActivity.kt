@@ -9,6 +9,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.trunghoang.orderhub.R
+import com.trunghoang.orderhub.model.EditorEvent
 import com.trunghoang.orderhub.model.ToolbarInfo
 import com.trunghoang.orderhub.ui.EditorFragment
 import com.trunghoang.orderhub.ui.login.LoginFragment
@@ -19,6 +20,7 @@ import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.fragment_main_screen.*
+import java.sql.Ref
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -97,9 +99,9 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
-    private fun consumeOrderEditor(orderEditorEvent: EventWrapper<String>?) {
+    private fun consumeOrderEditor(orderEditorEvent: EventWrapper<EditorEvent>?) {
         orderEditorEvent?.getContentIfNotHandled()?.apply {
-            openOrderEditorFragment(this)
+            openOrderEditorFragment(id, editMode)
         }
     }
 
@@ -118,16 +120,16 @@ class MainActivity : AppCompatActivity(),
             .commit()
     }
 
-    private fun openOrderEditorFragment(id: String) {
+    private fun openOrderEditorFragment(id: String, editMode: Boolean) {
         supportFragmentManager.beginTransaction()
             .replace(
                 R.id.constraint_main,
-                OrderEditorFragment.newInstance(id)
+                OrderEditorFragment.newInstance(id, editMode)
             )
             .addToBackStack(null)
             .commit()
     }
 
-    private fun getCurrentMainFragment() = supportFragmentManager
-        .findFragmentById(R.id.constraint_main) as? EditorFragment
+    private fun getCurrentMainFragment() =
+        supportFragmentManager.findFragmentById(R.id.constraint_main) as? EditorFragment
 }
