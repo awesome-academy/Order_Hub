@@ -40,7 +40,7 @@ class OrderAdapter @Inject constructor() :
                     DateUtils.FORMAT_SHOW_DATE
                 )
                 textName.text = order.name
-                textCod.text = FormatUtils.formatCurrency(order.cod)
+                textCod.text = FormatUtils.longToString(order.cod)
             }
         }
     }

@@ -1,299 +1,332 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/constraintOrderEditor"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/color_dim_background"
-    tools:context=".ui.orderEditor.OrderEditorFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarOrderEditor"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:menu="@menu/menu_editor" />
+    <data>
+        <import type="com.trunghoang.orderhub.utils.FormatUtils" />
+        <variable
+            name="order"
+            type="com.trunghoang.orderhub.ui.orderEditor.OrderEditorViewModel" />
+    </data>
 
-    <ScrollView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarOrderEditor">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintOrderEditor"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_dim_background"
+        tools:context=".ui.orderEditor.OrderEditorFragment">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarOrderEditor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:menu="@menu/menu_editor" />
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardReceiverInfo"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/order_editor_card_margin"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbarOrderEditor">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    style="@style/OrderEditorCardContent"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/textReceiver"
-                        style="@style/OrderEditorSectionTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/order_editor_title_margin_right"
-                        android:layout_marginRight="@dimen/order_editor_title_margin_right"
-                        android:text="@string/order_editor_title_receiver"
-                        app:layout_constraintBaseline_toBaselineOf="@+id/editReceiver"
-                        app:layout_constraintEnd_toStartOf="@+id/guideline3"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="parent" />
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardReceiverInfo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/order_editor_card_margin"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-                    <TextView
-                        android:id="@+id/textMobile"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/order_editor_title_mobile"
-                        app:layout_constraintBaseline_toBaselineOf="@+id/editMobile"
-                        app:layout_constraintEnd_toEndOf="@+id/textReceiver"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="@+id/textReceiver" />
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        style="@style/OrderEditorCardContent"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
 
-                    <TextView
-                        android:id="@+id/textAddress"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/order_editor_title_address"
-                        app:layout_constraintBaseline_toBaselineOf="@+id/editAddress"
-                        app:layout_constraintEnd_toEndOf="@+id/textReceiver"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="@+id/textReceiver" />
+                        <TextView
+                            android:id="@+id/textReceiver"
+                            style="@style/OrderEditorSectionTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/order_editor_title_margin_right"
+                            android:layout_marginRight="@dimen/order_editor_title_margin_right"
+                            android:text="@string/order_editor_title_receiver"
+                            app:layout_constraintBaseline_toBaselineOf="@+id/editReceiver"
+                            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent" />
 
-                    <TextView
-                        android:id="@+id/textDistrict"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/order_editor_title_district"
-                        app:layout_constraintBaseline_toBaselineOf="@+id/autoCompDistrict"
-                        app:layout_constraintEnd_toEndOf="@+id/textReceiver"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="@+id/textReceiver" />
+                        <TextView
+                            android:id="@+id/textMobile"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/order_editor_title_mobile"
+                            app:layout_constraintBaseline_toBaselineOf="@+id/editMobile"
+                            app:layout_constraintEnd_toEndOf="@+id/textReceiver"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="@+id/textReceiver" />
 
-                    <TextView
-                        android:id="@+id/textWard"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/order_editor_title_ward"
-                        app:layout_constraintBaseline_toBaselineOf="@+id/autoCompWard"
-                        app:layout_constraintEnd_toEndOf="@+id/textReceiver"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="@+id/textReceiver" />
+                        <TextView
+                            android:id="@+id/textAddress"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/order_editor_title_address"
+                            app:layout_constraintBaseline_toBaselineOf="@+id/editAddress"
+                            app:layout_constraintEnd_toEndOf="@+id/textReceiver"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="@+id/textReceiver" />
 
-                    <EditText
-                        android:id="@+id/editReceiver"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/order_editor_input_margin_left"
-                        android:layout_marginLeft="@dimen/order_editor_input_margin_left"
-                        android:ems="10"
-                        android:inputType="textPersonName"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="@+id/guideline3"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        <TextView
+                            android:id="@+id/textDistrict"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/order_editor_title_district"
+                            app:layout_constraintBaseline_toBaselineOf="@+id/autoCompDistrict"
+                            app:layout_constraintEnd_toEndOf="@+id/textReceiver"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="@+id/textReceiver" />
 
-                    <EditText
-                        android:id="@+id/editMobile"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/order_editor_input_margin_top"
-                        android:ems="10"
-                        android:inputType="phone"
-                        app:layout_constraintEnd_toEndOf="@+id/editReceiver"
-                        app:layout_constraintStart_toStartOf="@+id/editReceiver"
-                        app:layout_constraintTop_toBottomOf="@+id/editReceiver" />
+                        <TextView
+                            android:id="@+id/textWard"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/order_editor_title_ward"
+                            app:layout_constraintBaseline_toBaselineOf="@+id/autoCompWard"
+                            app:layout_constraintEnd_toEndOf="@+id/textReceiver"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="@+id/textReceiver" />
 
-                    <EditText
-                        android:id="@+id/editAddress"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/order_editor_input_margin_top"
-                        android:ems="10"
-                        android:inputType="text"
-                        app:layout_constraintEnd_toEndOf="@+id/editReceiver"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="@+id/editReceiver"
-                        app:layout_constraintTop_toBottomOf="@+id/editMobile" />
+                        <EditText
+                            android:id="@+id/editReceiver"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/order_editor_input_margin_left"
+                            android:layout_marginLeft="@dimen/order_editor_input_margin_left"
+                            android:ems="10"
+                            android:inputType="textPersonName"
+                            android:text="@={order.name}"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="@+id/guideline3"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                    <androidx.constraintlayout.widget.Guideline
-                        android:id="@+id/guideline3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintGuide_percent="0.4" />
+                        <EditText
+                            android:id="@+id/editMobile"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/order_editor_input_margin_top"
+                            android:ems="10"
+                            android:inputType="phone"
+                            android:text="@={order.mobile}"
+                            app:layout_constraintEnd_toEndOf="@+id/editReceiver"
+                            app:layout_constraintStart_toStartOf="@+id/editReceiver"
+                            app:layout_constraintTop_toBottomOf="@+id/editReceiver" />
 
-                    <AutoCompleteTextView
-                        android:id="@+id/autoCompDistrict"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/order_editor_input_margin_top"
-                        app:layout_constraintEnd_toEndOf="@+id/editReceiver"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="@+id/editReceiver"
-                        app:layout_constraintTop_toBottomOf="@+id/editAddress"
-                        android:completionThreshold="0"/>
+                        <EditText
+                            android:id="@+id/editAddress"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/order_editor_input_margin_top"
+                            android:ems="10"
+                            android:inputType="text"
+                            android:text="@={order.address}"
+                            app:layout_constraintEnd_toEndOf="@+id/editReceiver"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="@+id/editReceiver"
+                            app:layout_constraintTop_toBottomOf="@+id/editMobile" />
 
-                    <AutoCompleteTextView
-                        android:id="@+id/autoCompWard"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/order_editor_input_margin_top"
-                        app:layout_constraintEnd_toEndOf="@+id/editReceiver"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="@+id/editReceiver"
-                        app:layout_constraintTop_toBottomOf="@+id/autoCompDistrict"
-                        android:completionThreshold="0"/>
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/guideline3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_percent="0.4" />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.cardview.widget.CardView>
+                        <AutoCompleteTextView
+                            android:id="@+id/autoCompDistrict"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/order_editor_input_margin_top"
+                            android:completionThreshold="0"
+                            app:layout_constraintEnd_toEndOf="@+id/editReceiver"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="@+id/editReceiver"
+                            app:layout_constraintTop_toBottomOf="@+id/editAddress"
+                            android:text="@{order.districtFullName}"/>
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardOrderDetail"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/order_editor_card_margin"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cardReceiverInfo">
+                        <AutoCompleteTextView
+                            android:id="@+id/autoCompWard"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/order_editor_input_margin_top"
+                            android:completionThreshold="0"
+                            app:layout_constraintEnd_toEndOf="@+id/editReceiver"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="@+id/editReceiver"
+                            app:layout_constraintTop_toBottomOf="@+id/autoCompDistrict"
+                            android:text="@{order.wardName}"/>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    style="@style/OrderEditorCardContent"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
 
-                    <TextView
-                        android:id="@+id/textOrderDetailTitle"
-                        style="@style/OrderEditorSectionTitle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@string/order_editor_title_order_detail"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardOrderDetail"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/order_editor_card_margin"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/cardReceiverInfo">
 
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/buttonAddProduct"
-                        style="@style/ButtonAddMore"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/order_editor_button_margin_top"
-                        android:drawableStart="@drawable/ic_add"
-                        android:drawableLeft="@drawable/ic_add"
-                        android:text="@string/order_editor_title_more_product"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textOrderDetailTitle" />
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        style="@style/OrderEditorCardContent"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
 
-                    <View
-                        android:id="@+id/divider3"
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:background="?android:attr/listDivider"
-                        app:layout_constraintEnd_toEndOf="@+id/buttonAddProduct"
-                        app:layout_constraintStart_toStartOf="@+id/buttonAddProduct"
-                        app:layout_constraintTop_toBottomOf="@+id/buttonAddProduct" />
+                        <TextView
+                            android:id="@+id/textOrderDetailTitle"
+                            style="@style/OrderEditorSectionTitle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/order_editor_title_order_detail"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                    <androidx.constraintlayout.widget.Guideline
-                        android:id="@+id/guideline4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintGuide_percent="0.4" />
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerProducts"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/order_editor_button_margin_top"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textOrderDetailTitle"
+                            tools:listitem="@layout/item_order_list_product" />
 
-                    <TextView
-                        android:id="@+id/textShipCost"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/order_editor_title_margin_right"
-                        android:layout_marginRight="@dimen/order_editor_title_margin_right"
-                        android:text="@string/order_editor_title_ship_cost"
-                        app:layout_constraintBaseline_toBaselineOf="@+id/editShipCost"
-                        app:layout_constraintEnd_toStartOf="@+id/guideline4"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="@+id/divider3" />
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/buttonAddProduct"
+                            style="@style/ButtonAddMore"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/order_editor_button_margin_top"
+                            android:drawableStart="@drawable/ic_add"
+                            android:drawableLeft="@drawable/ic_add"
+                            android:text="@string/order_editor_title_more_product"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/recyclerProducts" />
 
-                    <TextView
-                        android:id="@+id/textDiscount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/order_editor_title_discount"
-                        app:layout_constraintBaseline_toBaselineOf="@+id/editDiscount"
-                        app:layout_constraintEnd_toEndOf="@+id/textShipCost"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="@+id/textShipCost" />
+                        <View
+                            android:id="@+id/divider3"
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:background="?android:attr/listDivider"
+                            app:layout_constraintEnd_toEndOf="@+id/buttonAddProduct"
+                            app:layout_constraintStart_toStartOf="@+id/buttonAddProduct"
+                            app:layout_constraintTop_toBottomOf="@+id/buttonAddProduct" />
 
-                    <TextView
-                        android:id="@+id/textTotal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/order_editor_title_total"
-                        app:layout_constraintBaseline_toBaselineOf="@+id/editTotal"
-                        app:layout_constraintEnd_toEndOf="@+id/textShipCost"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="@+id/textDiscount" />
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/guideline4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_percent="0.4" />
 
-                    <EditText
-                        android:id="@+id/editShipCost"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/order_editor_input_margin_left"
-                        android:layout_marginLeft="@dimen/order_editor_input_margin_left"
-                        android:layout_marginTop="@dimen/order_editor_cost_section_margin_top"
-                        android:ems="10"
-                        android:inputType="number"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="@+id/guideline4"
-                        app:layout_constraintTop_toBottomOf="@+id/divider3" />
+                        <TextView
+                            android:id="@+id/textShipCost"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/order_editor_title_margin_right"
+                            android:layout_marginRight="@dimen/order_editor_title_margin_right"
+                            android:text="@string/order_editor_title_ship_cost"
+                            app:layout_constraintBaseline_toBaselineOf="@+id/editShipCost"
+                            app:layout_constraintEnd_toStartOf="@+id/guideline4"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="@+id/divider3" />
 
-                    <EditText
-                        android:id="@+id/editDiscount"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/order_editor_input_margin_top"
-                        android:ems="10"
-                        android:inputType="number"
-                        app:layout_constraintEnd_toEndOf="@+id/editShipCost"
-                        app:layout_constraintStart_toStartOf="@+id/editShipCost"
-                        app:layout_constraintTop_toBottomOf="@+id/editShipCost" />
+                        <TextView
+                            android:id="@+id/textDiscount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/order_editor_title_discount"
+                            app:layout_constraintBaseline_toBaselineOf="@+id/editDiscount"
+                            app:layout_constraintEnd_toEndOf="@+id/textShipCost"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="@+id/textShipCost" />
 
-                    <EditText
-                        android:id="@+id/editTotal"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/order_editor_input_margin_top"
-                        android:ems="10"
-                        android:inputType="number"
-                        app:layout_constraintEnd_toEndOf="@+id/editShipCost"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="@+id/editShipCost"
-                        app:layout_constraintTop_toBottomOf="@+id/editDiscount" />
+                        <TextView
+                            android:id="@+id/textTotal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/order_editor_total_margin_top"
+                            android:text="@string/order_editor_title_total"
+                            app:layout_constraintEnd_toEndOf="@+id/textShipCost"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="@+id/textDiscount"
+                            app:layout_constraintTop_toBottomOf="@+id/editDiscount" />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.cardview.widget.CardView>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                        <EditText
+                            android:id="@+id/editShipCost"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/order_editor_input_margin_left"
+                            android:layout_marginLeft="@dimen/order_editor_input_margin_left"
+                            android:layout_marginTop="@dimen/order_editor_cost_section_margin_top"
+                            android:ems="10"
+                            android:inputType="number"
+                            longNumber="@={order.fee}"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="@+id/guideline4"
+                            app:layout_constraintTop_toBottomOf="@+id/divider3"
+                            android:textAlignment="viewEnd"
+                            android:gravity="end" />
 
-    </ScrollView>
+                        <EditText
+                            android:id="@+id/editDiscount"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/order_editor_input_margin_top"
+                            android:ems="10"
+                            android:inputType="number"
+                            longNumber="@={order.discount}"
+                            app:layout_constraintEnd_toEndOf="@+id/editShipCost"
+                            app:layout_constraintStart_toStartOf="@+id/editShipCost"
+                            app:layout_constraintTop_toBottomOf="@+id/editShipCost"
+                            android:textAlignment="viewEnd"
+                            android:gravity="end" />
 
+                        <TextView
+                            android:id="@+id/textCalculatedTotal"
+                            style="@style/OrderEditorSectionTitle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            app:layout_constraintBaseline_toBaselineOf="@+id/textTotal"
+                            app:layout_constraintEnd_toEndOf="@+id/editShipCost"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="@+id/editShipCost"
+                            android:text="@{FormatUtils.longToString(order.cod)}"
+                            android:textAlignment="viewEnd"
+                            android:gravity="end" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -103,15 +103,17 @@ class OrderEditorFragment : Fragment() {
                 wardsResponse.observe(this@OrderEditorFragment, Observer {
                     consumeWards(it)
                 })
-                findServices(
-                    GHNApiRequest.Services(
-                        token,
-                        toDistrictID = district.id
+                district.id?.let {
+                    findServices(
+                        GHNApiRequest.Services(
+                            token,
+                            toDistrictID = it
+                        )
                     )
-                )
-                servicesResponse.observe(this@OrderEditorFragment, Observer {
-                    consumeServices(it)
-                })
+                    servicesResponse.observe(this@OrderEditorFragment, Observer {
+                        consumeServices(it)
+                    })
+                }
             }
         }
     }

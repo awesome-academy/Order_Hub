@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.trunghoang.orderhub.model.APIResponse
 import com.trunghoang.orderhub.model.APIResponseWrapper
+import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -46,6 +47,34 @@ fun <T> Single<APIResponseWrapper<T>>.toLiveData(): LiveData<APIResponse<T>> {
                         throw Exception(it.msg)
                     }
                 }
+                .subscribe(
+                    {
+                        this.value = APIResponse.success(it)
+                    },
+                    {
+                        this.value = APIResponse.error(it)
+                    }
+                )
+        }
+
+        override fun onInactive() {
+            disposable?.dispose()
+            super.onInactive()
+        }
+    }
+}
+
+fun <T> Observable<T>.toLiveData(): LiveData<APIResponse<T>> {
+    return object : MutableLiveData<APIResponse<T>>() {
+        var disposable: Disposable? = null
+
+        override fun onActive() {
+            super.onActive()
+
+            disposable = this@toLiveData
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { this.value = APIResponse.loading() }
                 .subscribe(
                     {
                         this.value = APIResponse.success(it)

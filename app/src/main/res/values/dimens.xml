@@ -44,4 +44,12 @@
     <dimen name="order_editor_input_margin_top">8dp</dimen>
     <dimen name="order_editor_button_margin_top">8dp</dimen>
     <dimen name="order_editor_cost_section_margin_top">16dp</dimen>
+    <dimen name="order_editor_total_margin_top">16dp</dimen>
+    <dimen name="order_editor_section_title">20sp</dimen>
+    <dimen name="order_editor_product_margin_top">8dp</dimen>
+    <dimen name="order_editor_product_margin_left">8dp</dimen>
+    <dimen name="order_editor_product_margin_vertical">8dp</dimen>
+    <dimen name="order_editor_product_margin_right">8dp</dimen>
+    <dimen name="order_editor_product_input_text">14sp</dimen>
+    <dimen name="item_order_product_margin_right">8dp</dimen>
 </resources>

@@ -45,4 +45,9 @@
     <string name="order_editor_title_order_detail">Chi tiết đơn hàng</string>
     <string name="error_loading_wards">Can\'t load wards</string>
     <string name="error_loading_fee">Can\'t calculate fee</string>
+    <string name="order_editor_success_saved">Đã lưu đơn hàng!</string>
+    <string name="product_quantity_input_title">SL</string>
+    <string name="product_name_input_title">Chọn sản phẩm</string>
+    <string name="order_editor_product_price_title">Giá</string>
+    <string name="order_editor_input_product_confirm">OK</string>
 </resources>
