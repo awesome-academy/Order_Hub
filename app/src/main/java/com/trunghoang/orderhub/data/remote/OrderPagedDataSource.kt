@@ -5,6 +5,7 @@ import androidx.paging.ItemKeyedDataSource
 import com.google.firebase.firestore.FirebaseFirestore
 import com.trunghoang.orderhub.data.OrderParams
 import com.trunghoang.orderhub.data.OrderParams.Companion.FIELD_STATUS
+import com.trunghoang.orderhub.data.firebase.FirebaseKeys.COL_ORDERS
 import com.trunghoang.orderhub.model.EnumStatus
 import com.trunghoang.orderhub.model.Order
 import io.reactivex.disposables.CompositeDisposable
@@ -14,9 +15,6 @@ class OrderPagedDataSource<T>(
     private var orderParams: OrderParams<T>,
     private var compositeDisposable: CompositeDisposable
 ) : ItemKeyedDataSource<T, Order>() {
-    companion object {
-        const val COL_ORDERS = "orders"
-    }
 
     var progressStatus: MutableLiveData<EnumStatus> = MutableLiveData()
     override fun loadInitial(
@@ -61,7 +59,6 @@ class OrderPagedDataSource<T>(
             val orders = ArrayList<Order>()
             for (snapshot in it.documents) {
                 snapshot?.toObject(Order::class.java)
-                    ?.apply { id = snapshot.id }
                     ?.let { order ->
                         orders.add(order)
                     }
