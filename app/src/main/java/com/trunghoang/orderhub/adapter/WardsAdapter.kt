@@ -16,7 +16,7 @@ class WardsAdapter(context: Context, itemLayout: Int, data: List<Ward>) :
 
     inner class WardFilter : BaseSuggestFilter() {
         override fun checkItem(item: Ward, pattern: String): Boolean {
-            return item.name.standardize().contains(pattern)
+            return item.name?.standardize()?.contains(pattern)?:false
         }
 
         override fun convertResultToString(resultValue: Any?) =

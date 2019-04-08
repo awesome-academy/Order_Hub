@@ -80,6 +80,8 @@
 
     <style name="OrderEditorSectionTitle">
         <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/order_editor_section_title</item>
+        <item name="android:textColor">@color/color_black_text</item>
     </style>
 
     <style name="ButtonAddMore">
@@ -87,6 +89,10 @@
         <item name="android:paddingRight">@dimen/button_add_more_padding_horizontal</item>
         <item name="android:background">@color/color_primary_light</item>
         <item name="android:textColor">@color/color_primary_text</item>
+    </style>
+
+    <style name="OrderEditorProductInput">
+        <item name="android:textSize">@dimen/order_editor_product_input_text</item>
     </style>
 
 </resources>

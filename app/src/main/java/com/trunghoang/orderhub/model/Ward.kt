@@ -4,9 +4,9 @@ import com.google.gson.annotations.SerializedName
 
 class Ward(
     @SerializedName(WARD_CODE)
-    val code: String,
+    val code: String? = null,
     @SerializedName(WARD_NAME)
-    val name: String
+    val name: String? = null
 ) {
     companion object {
         const val WARD_CODE = "WardCode"

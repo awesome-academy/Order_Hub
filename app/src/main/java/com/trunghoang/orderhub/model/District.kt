@@ -3,14 +3,14 @@ package com.trunghoang.orderhub.model
 import com.google.gson.annotations.SerializedName
 
 data class District(
-    @SerializedName(value = DISTRICT_ID)
-    val id: Int,
-    @SerializedName(value = DISTRICT_NAME)
-    val name: String,
-    @SerializedName(value = PROVINCE_NAME)
-    val provinceName: String,
-    @SerializedName(value = SUPPORT_TYPE)
-    val supportType: Int
+    @SerializedName(DISTRICT_ID)
+    val id: Int? = null,
+    @SerializedName(DISTRICT_NAME)
+    val name: String? = null,
+    @SerializedName(PROVINCE_NAME)
+    val provinceName: String? = null,
+    @SerializedName(SUPPORT_TYPE)
+    val supportType: Int? = null
 ) {
     companion object {
         const val DISTRICT_ID = "DistrictID"
