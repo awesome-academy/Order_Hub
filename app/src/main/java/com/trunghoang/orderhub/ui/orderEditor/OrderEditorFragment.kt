@@ -106,7 +106,7 @@ class OrderEditorFragment : Fragment() {
                 findServices(
                     GHNApiRequest.Services(
                         token,
-                        ToDistrictID = district.id
+                        toDistrictID = district.id
                     )
                 )
                 servicesResponse.observe(this@OrderEditorFragment, Observer {
@@ -137,9 +137,9 @@ class OrderEditorFragment : Fragment() {
             EnumStatus.SUCCESS -> {
                 orderEditorViewModel.serviceId.value =
                     servicesResponse.data?.find {
-                        it.Name == GHNApiResponse.Service.DEFAULT_SERVICE_NAME
+                        it.name == GHNApiResponse.Service.DEFAULT_SERVICE_NAME
                     }?.let {
-                        it.ServiceID
+                        it.serviceID
                     }
             }
             EnumStatus.ERROR -> {
@@ -156,8 +156,8 @@ class OrderEditorFragment : Fragment() {
                     calculateFee(
                         GHNApiRequest.Fee(
                             token,
-                            ToDistrictID = districtId,
-                            ServiceID = serviceId
+                            toDistrictID = districtId,
+                            serviceID = serviceId
                         )
                     )
                     feeResponse.observe(this@OrderEditorFragment, Observer {
@@ -173,7 +173,7 @@ class OrderEditorFragment : Fragment() {
             EnumStatus.LOADING -> {
             }
             EnumStatus.SUCCESS -> {
-                editShipCost.setText(feeResponse.data?.CalculatedFee.toString())
+                editShipCost.setText(feeResponse.data?.calculatedFee.toString())
             }
             EnumStatus.ERROR -> {
                 feeResponse.error?.printStackTrace()
@@ -203,7 +203,7 @@ class OrderEditorFragment : Fragment() {
 
     private fun setAutoCompWards(wardsResponse: APIResponse<GHNApiResponse.Wards>) {
         context?.let {
-            wardsResponse.data?.Wards?.let { data ->
+            wardsResponse.data?.wards?.let { data ->
                 wardsAdapter = WardsAdapter(
                     it,
                     R.layout.item_suggest_list,
