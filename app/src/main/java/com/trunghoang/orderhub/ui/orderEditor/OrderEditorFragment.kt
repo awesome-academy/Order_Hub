@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.trunghoang.orderhub.R
 import com.trunghoang.orderhub.adapter.DistrictsAdapter
+import com.trunghoang.orderhub.adapter.WardsAdapter
 import com.trunghoang.orderhub.model.*
 import com.trunghoang.orderhub.ui.mainActivity.MainViewModel
 import com.trunghoang.orderhub.utils.EventWrapper
@@ -32,6 +33,7 @@ class OrderEditorFragment : Fragment() {
     @field:Named(OrderEditorViewModel.NAME)
     lateinit var orderEditorViewModel: OrderEditorViewModel
     private var districtsAdapter: DistrictsAdapter? = null
+    private var wardsAdapter: WardsAdapter? = null
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
@@ -56,17 +58,23 @@ class OrderEditorFragment : Fragment() {
             consumeToken(it)
         })
         with(orderEditorViewModel) {
-            districtsResponse.observe(this@OrderEditorFragment, Observer {
-                consumeDistricts(it)
+            district.observe(this@OrderEditorFragment, Observer {
+                consumeDistrict(it)
+            })
+            serviceId.observe(this@OrderEditorFragment, Observer {
+                consumeServiceId(it)
             })
         }
     }
 
     private fun consumeToken(tokenEvent: EventWrapper<String>) {
-        tokenEvent.peekContent().apply {
-            if (isNotBlank()) orderEditorViewModel.getDistricts(
-                GHNApiRequest.Districts(this)
-            )
+        tokenEvent.peekContent().let { token ->
+            if (token.isNotBlank()) with (orderEditorViewModel) {
+                getDistricts(GHNApiRequest.Districts(token))
+                districtsResponse.observe(this@OrderEditorFragment, Observer {
+                    consumeDistricts(it)
+                })
+            }
         }
     }
 
@@ -79,6 +87,97 @@ class OrderEditorFragment : Fragment() {
             EnumStatus.ERROR -> {
                 districtResponse.error?.printStackTrace()
                 context?.toast(getString(R.string.error_general))
+            }
+        }
+    }
+
+    private fun consumeDistrict(district: District) {
+        mainViewModel.tokenEvent.value?.peekContent()?.let { token ->
+            with (orderEditorViewModel) {
+                getWards(
+                    GHNApiRequest.Wards(
+                        token,
+                        district.id
+                    )
+                )
+                wardsResponse.observe(this@OrderEditorFragment, Observer {
+                    consumeWards(it)
+                })
+                findServices(
+                    GHNApiRequest.Services(
+                        token,
+                        toDistrictID = district.id
+                    )
+                )
+                servicesResponse.observe(this@OrderEditorFragment, Observer {
+                    consumeServices(it)
+                })
+            }
+        }
+    }
+
+    private fun consumeWards(wardsResponse: APIResponse<GHNApiResponse.Wards>) {
+        when (wardsResponse.status) {
+            EnumStatus.LOADING -> {
+            }
+            EnumStatus.SUCCESS -> {
+                setAutoCompWards(wardsResponse)
+            }
+            EnumStatus.ERROR -> {
+                wardsResponse.error?.printStackTrace()
+                context?.toast(getString(R.string.error_loading_wards))
+            }
+        }
+    }
+
+    private fun consumeServices(servicesResponse: APIResponse<List<GHNApiResponse.Service>>) {
+        when (servicesResponse.status) {
+            EnumStatus.LOADING -> {
+            }
+            EnumStatus.SUCCESS -> {
+                orderEditorViewModel.serviceId.value =
+                    servicesResponse.data?.find {
+                        it.name == GHNApiResponse.Service.DEFAULT_SERVICE_NAME
+                    }?.let {
+                        it.serviceID
+                    }
+            }
+            EnumStatus.ERROR -> {
+                servicesResponse.error?.printStackTrace()
+                context?.toast(servicesResponse.error.toString())
+            }
+        }
+    }
+
+    private fun consumeServiceId(serviceId: Int) {
+        mainViewModel.tokenEvent.value?.peekContent()?.let { token ->
+            with (orderEditorViewModel) {
+                district.value?.id?.let { districtId ->
+                    calculateFee(
+                        GHNApiRequest.Fee(
+                            token,
+                            toDistrictID = districtId,
+                            serviceID = serviceId
+                        )
+                    )
+                    feeResponse.observe(this@OrderEditorFragment, Observer {
+                        consumeFee(it)
+                    })
+                }
+            }
+        }
+    }
+
+    private fun consumeFee(feeResponse: APIResponse<GHNApiResponse.Fee>) {
+        when (feeResponse.status) {
+            EnumStatus.LOADING -> {
+            }
+            EnumStatus.SUCCESS -> {
+                editShipCost.setText(feeResponse.data?.calculatedFee.toString())
+            }
+            EnumStatus.ERROR -> {
+                feeResponse.error?.printStackTrace()
+                context?.toast(getString(R.string.error_loading_fee))
             }
         }
     }
@@ -98,6 +197,19 @@ class OrderEditorFragment : Fragment() {
                             it as District
                     }
                 }
+            }
+        }
+    }
+
+    private fun setAutoCompWards(wardsResponse: APIResponse<GHNApiResponse.Wards>) {
+        context?.let {
+            wardsResponse.data?.wards?.let { data ->
+                wardsAdapter = WardsAdapter(
+                    it,
+                    R.layout.item_suggest_list,
+                    data
+                )
+                autoCompWard.setAdapter(wardsAdapter)
             }
         }
     }

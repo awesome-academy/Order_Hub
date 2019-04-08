@@ -2,7 +2,8 @@ package com.trunghoang.orderhub.service
 
 import com.trunghoang.orderhub.model.APIResponseWrapper
 import com.trunghoang.orderhub.model.District
-import com.trunghoang.orderhub.model.DistrictsRequest
+import com.trunghoang.orderhub.model.GHNApiRequest
+import com.trunghoang.orderhub.model.GHNApiResponse
 import io.reactivex.Single
 import retrofit2.http.*
 
@@ -12,6 +13,9 @@ const val BASE_LOGIN_URL = "https://sso.ghn.vn/"
 object EndPoint {
     const val LOGIN = "ssoLogin"
     const val GET_DISTRICTS = "GetDistricts"
+    const val GET_WARDS = "GetWards"
+    const val CALCULATE_FEE = "CalculateFee"
+    const val FIND_AVAILABLE_SERVICES = "FindAvailableServices"
 }
 
 object APIConfig {
@@ -30,8 +34,23 @@ interface GHNApi {
 
     @POST(EndPoint.GET_DISTRICTS)
     fun getDistricts(
-        @Body districtsRequest: DistrictsRequest
+        @Body districtsRequest: GHNApiRequest.Districts
     ): Single<APIResponseWrapper<List<District>>>
+
+    @POST(EndPoint.GET_WARDS)
+    fun getWards(
+        @Body wardsRequest: GHNApiRequest.Wards
+    ): Single<APIResponseWrapper<GHNApiResponse.Wards>>
+
+    @POST(EndPoint.CALCULATE_FEE)
+    fun calculateFee(
+        @Body feeRequest: GHNApiRequest.Fee
+    ): Single<APIResponseWrapper<GHNApiResponse.Fee>>
+
+    @POST(EndPoint.FIND_AVAILABLE_SERVICES)
+    fun findServices(
+        @Body servicesRequest: GHNApiRequest.Services
+    ): Single<APIResponseWrapper<List<GHNApiResponse.Service>>>
 }
 
 interface LoginAPI {

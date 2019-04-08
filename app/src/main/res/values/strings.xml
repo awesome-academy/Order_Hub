@@ -32,4 +32,17 @@
     <string name="notice_no_order">Hiện tại không có đơn hàng ở trạng thái này</string>
     <string name="menu_item_save">Lưu</string>
     <string name="order_editor_new_order_title">Tạo đơn mới</string>
+    <string name="error_load_districts">Can\'t load districts</string>
+    <string name="order_editor_title_receiver">Người nhận:</string>
+    <string name="order_editor_title_mobile">Số điện thoại:</string>
+    <string name="order_editor_title_address">Địa chỉ:</string>
+    <string name="order_editor_title_district">Quận/huyện:</string>
+    <string name="order_editor_title_ward">Phường/xã:</string>
+    <string name="order_editor_title_more_product">Thêm sản phẩm</string>
+    <string name="order_editor_title_ship_cost">Phí vận chuyển:</string>
+    <string name="order_editor_title_discount">Giảm giá:</string>
+    <string name="order_editor_title_total">Tổng cộng:</string>
+    <string name="order_editor_title_order_detail">Chi tiết đơn hàng</string>
+    <string name="error_loading_wards">Can\'t load wards</string>
+    <string name="error_loading_fee">Can\'t calculate fee</string>
 </resources>

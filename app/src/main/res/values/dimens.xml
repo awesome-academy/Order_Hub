@@ -38,4 +38,10 @@
     <dimen name="order_editor_section_padding_horizontal">12dp</dimen>
     <dimen name="order_editor_card_margin">16dp</dimen>
     <dimen name="button_add_more_padding_horizontal">16dp</dimen>
+    <dimen name="item_suggest_padding">10dp</dimen>
+    <dimen name="order_editor_title_margin_right">8dp</dimen>
+    <dimen name="order_editor_input_margin_left">8dp</dimen>
+    <dimen name="order_editor_input_margin_top">8dp</dimen>
+    <dimen name="order_editor_button_margin_top">8dp</dimen>
+    <dimen name="order_editor_cost_section_margin_top">16dp</dimen>
 </resources>

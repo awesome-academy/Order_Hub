@@ -31,7 +31,6 @@ class MainScreenFragment() : Fragment(),
         @JvmStatic
         fun newInstance() = MainScreenFragment()
     }
-
     @Inject
     lateinit var dispatchingFragmentInjector: DispatchingAndroidInjector<Fragment>
     @Inject

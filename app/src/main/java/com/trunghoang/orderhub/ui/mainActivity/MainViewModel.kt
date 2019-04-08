@@ -26,7 +26,7 @@ class MainViewModel @Inject constructor(private val context: Context) :
     private fun getSharedPref() {
         tokenEvent.value = EventWrapper(
             context.getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE)
-                .getString(PREF_TOKEN, null)
+                .getString(PREF_TOKEN, NO_STRING)
         )
     }
 
