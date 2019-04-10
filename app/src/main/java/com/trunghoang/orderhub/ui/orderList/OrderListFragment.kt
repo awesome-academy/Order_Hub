@@ -38,8 +38,7 @@ class OrderListFragment : Fragment() {
     @Inject
     @field:Named(OrderListViewModel.NAME)
     lateinit var orderListViewModel: OrderListViewModel
-    @Inject
-    lateinit var orderAdapter: OrderAdapter
+    private var orderAdapter: OrderAdapter? = null
     private val status by lazy {
         mainScreenViewModel.orderStatusEvent.value?.peekContent()
     }
@@ -64,10 +63,13 @@ class OrderListFragment : Fragment() {
             consumeOrderLoadingProgress(it)
         })
         orderListViewModel.ordersPagedList.observe(this, Observer {
-            orderAdapter.submitList(it)
+            orderAdapter?.submitList(it)
         })
         with(recyclerOrders) {
             layoutManager = LinearLayoutManager(this@OrderListFragment.context)
+            orderAdapter = OrderAdapter {
+                mainViewModel.orderEditorEvent.value = EventWrapper(it.id)
+            }
             adapter = orderAdapter
         }
         swipeRefresh.setOnRefreshListener {
@@ -103,7 +105,7 @@ class OrderListFragment : Fragment() {
             showNoResult(false)
             progressBar.visibility = View.VISIBLE
         } else {
-            showNoResult(orderAdapter.itemCount == 0)
+            showNoResult(orderAdapter?.itemCount == 0)
             progressBar.visibility = View.GONE
         }
     }

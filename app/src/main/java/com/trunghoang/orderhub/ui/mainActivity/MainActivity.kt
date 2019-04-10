@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.trunghoang.orderhub.R
 import com.trunghoang.orderhub.model.ToolbarInfo
+import com.trunghoang.orderhub.ui.EditorFragment
 import com.trunghoang.orderhub.ui.login.LoginFragment
 import com.trunghoang.orderhub.ui.mainScreen.MainScreenFragment
 import com.trunghoang.orderhub.ui.orderEditor.OrderEditorFragment
@@ -67,6 +68,10 @@ class MainActivity : AppCompatActivity(),
             }
             true
         }
+        R.id.itemSave -> {
+            getCurrentMainFragment()?.saveData()
+            true
+        }
         else -> super.onOptionsItemSelected(item)
     }
 
@@ -113,10 +118,16 @@ class MainActivity : AppCompatActivity(),
             .commit()
     }
 
-    private fun openOrderEditorFragment(orderId: String?) {
+    private fun openOrderEditorFragment(id: String) {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.constraint_main, OrderEditorFragment.newInstance())
+            .replace(
+                R.id.constraint_main,
+                OrderEditorFragment.newInstance(id)
+            )
             .addToBackStack(null)
             .commit()
     }
+
+    private fun getCurrentMainFragment() = supportFragmentManager
+        .findFragmentById(R.id.constraint_main) as? EditorFragment
 }

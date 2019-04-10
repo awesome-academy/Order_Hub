@@ -2,6 +2,7 @@ package com.trunghoang.orderhub.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.trunghoang.orderhub.ui.inputProduct.InputProductViewModel
 import com.trunghoang.orderhub.ui.login.LoginViewModel
 import com.trunghoang.orderhub.ui.mainActivity.MainViewModel
 import com.trunghoang.orderhub.ui.mainScreen.MainScreenViewModel
@@ -40,6 +41,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(OrderEditorViewModel::class)
     abstract fun bindOrderEditorViewModel(orderEditorViewModel: OrderEditorViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(InputProductViewModel::class)
+    abstract fun bindInputProductViewModel(inputProductViewModel: InputProductViewModel): ViewModel
 
     @Binds
     @Singleton

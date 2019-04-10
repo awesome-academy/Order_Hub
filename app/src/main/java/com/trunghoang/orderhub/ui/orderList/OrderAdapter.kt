@@ -11,18 +11,16 @@ import com.trunghoang.orderhub.R
 import com.trunghoang.orderhub.model.Order
 import com.trunghoang.orderhub.utils.FormatUtils
 import kotlinx.android.synthetic.main.item_order_list.view.*
-import javax.inject.Inject
 
-class OrderAdapter @Inject constructor() :
+class OrderAdapter(private val onDetailClick: (order: Order) -> Unit) :
     PagedListAdapter<Order, OrderAdapter.OrderViewHolder>(OrderDiffCallback) {
-
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ) = LayoutInflater.from(parent.context)
         .inflate(R.layout.item_order_list, parent, false)
         .let {
-            OrderViewHolder(it)
+            OrderViewHolder(it, onDetailClick)
         }
 
     override fun onBindViewHolder(holder: OrderViewHolder, position: Int) {
@@ -31,7 +29,10 @@ class OrderAdapter @Inject constructor() :
         }
     }
 
-    class OrderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class OrderViewHolder(
+        itemView: View,
+        val onDetailClick: (order: Order) -> Unit
+    ) : RecyclerView.ViewHolder(itemView) {
         fun bindView(order: Order) {
             with(itemView) {
                 textCreatedTime.text = DateUtils.formatDateTime(
@@ -41,6 +42,9 @@ class OrderAdapter @Inject constructor() :
                 )
                 textName.text = order.name
                 textCod.text = FormatUtils.longToString(order.cod)
+                buttonDetail.setOnClickListener {
+                    onDetailClick(order)
+                }
             }
         }
     }
