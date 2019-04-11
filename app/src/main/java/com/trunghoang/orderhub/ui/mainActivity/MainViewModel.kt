@@ -3,6 +3,7 @@ package com.trunghoang.orderhub.ui.mainActivity
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.trunghoang.orderhub.model.EditorEvent
 import com.trunghoang.orderhub.model.ToolbarInfo
 import com.trunghoang.orderhub.utils.EventWrapper
 import javax.inject.Inject
@@ -16,7 +17,7 @@ class MainViewModel @Inject constructor(private val context: Context) :
         const val NO_STRING = ""
     }
     var tokenEvent: MutableLiveData<EventWrapper<String>> = MutableLiveData()
-    var orderEditorEvent: MutableLiveData<EventWrapper<String>> = MutableLiveData()
+    var orderEditorEvent: MutableLiveData<EventWrapper<EditorEvent>> = MutableLiveData()
     var toolbarInfo = MutableLiveData<ToolbarInfo>()
 
     init {

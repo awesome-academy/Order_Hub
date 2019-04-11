@@ -8,6 +8,7 @@ import com.trunghoang.orderhub.data.ShippingInfoRepository
 import com.trunghoang.orderhub.model.*
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 class OrderEditorViewModel @Inject constructor(
     private val shippingInfoRepo: ShippingInfoRepository,
@@ -16,7 +17,7 @@ class OrderEditorViewModel @Inject constructor(
     companion object {
         const val NAME = "OrderEditorViewModel"
     }
-
+    var editMode = MutableLiveData<Boolean>()
     var districtsResponse = MutableLiveData<APIResponse<List<District>>>()
     var wardsResponse = MutableLiveData<APIResponse<GHNApiResponse.Wards>>()
     var feeResponse = MutableLiveData<APIResponse<GHNApiResponse.Fee>>()

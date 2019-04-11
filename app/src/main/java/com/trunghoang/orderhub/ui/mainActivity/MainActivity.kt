@@ -9,10 +9,12 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.trunghoang.orderhub.R
+import com.trunghoang.orderhub.model.EditorEvent
 import com.trunghoang.orderhub.model.ToolbarInfo
 import com.trunghoang.orderhub.ui.EditorFragment
 import com.trunghoang.orderhub.ui.login.LoginFragment
 import com.trunghoang.orderhub.ui.mainScreen.MainScreenFragment
+import com.trunghoang.orderhub.ui.orderDetail.OrderDetailFragment
 import com.trunghoang.orderhub.ui.orderEditor.OrderEditorFragment
 import com.trunghoang.orderhub.utils.EventWrapper
 import dagger.android.AndroidInjection
@@ -97,9 +99,13 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
-    private fun consumeOrderEditor(orderEditorEvent: EventWrapper<String>?) {
+    private fun consumeOrderEditor(orderEditorEvent: EventWrapper<EditorEvent>?) {
         orderEditorEvent?.getContentIfNotHandled()?.apply {
-            openOrderEditorFragment(this)
+            if (editMode) {
+                openOrderEditorFragment(id)
+            } else {
+                openOrderDetailFragment(id)
+            }
         }
     }
 
@@ -128,6 +134,16 @@ class MainActivity : AppCompatActivity(),
             .commit()
     }
 
-    private fun getCurrentMainFragment() = supportFragmentManager
-        .findFragmentById(R.id.constraint_main) as? EditorFragment
+    private fun openOrderDetailFragment(id: String) {
+        supportFragmentManager.beginTransaction()
+            .replace(
+                R.id.constraint_main,
+                OrderDetailFragment.newInstance(id)
+            )
+            .addToBackStack(null)
+            .commit()
+    }
+
+    private fun getCurrentMainFragment() =
+        supportFragmentManager.findFragmentById(R.id.constraint_main) as? EditorFragment
 }

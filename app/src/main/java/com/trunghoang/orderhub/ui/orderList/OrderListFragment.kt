@@ -10,16 +10,17 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.trunghoang.orderhub.R
 import com.trunghoang.orderhub.data.OrderParams
-import com.trunghoang.orderhub.model.EnumStatus
-import com.trunghoang.orderhub.model.OrderStatus
-import com.trunghoang.orderhub.model.ToolbarInfo
+import com.trunghoang.orderhub.model.*
 import com.trunghoang.orderhub.ui.mainActivity.MainViewModel
 import com.trunghoang.orderhub.ui.mainScreen.MainScreenViewModel
+import com.trunghoang.orderhub.ui.orderEditor.InputProductAdapter
 import com.trunghoang.orderhub.utils.EventWrapper
 import com.trunghoang.orderhub.utils.getStringIdFromStatus
+import com.trunghoang.orderhub.utils.hideViewOnScrollUp
 import com.trunghoang.orderhub.utils.toast
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_order_list.*
+import kotlinx.android.synthetic.main.item_order_list.view.*
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -67,17 +68,25 @@ class OrderListFragment : Fragment() {
         })
         with(recyclerOrders) {
             layoutManager = LinearLayoutManager(this@OrderListFragment.context)
-            orderAdapter = OrderAdapter {
-                mainViewModel.orderEditorEvent.value = EventWrapper(it.id)
-            }
+            orderAdapter = OrderAdapter(
+                {
+                    mainViewModel.orderEditorEvent.value =
+                        EventWrapper(EditorEvent(it.id, false))
+                },
+                { itemView, order ->
+                    setProductsRecyclerView(itemView, order)
+                }
+            )
             adapter = orderAdapter
+            hideViewOnScrollUp(floatNewOrder)
         }
         swipeRefresh.setOnRefreshListener {
             getOrders(status)
             swipeRefresh.isRefreshing = false
         }
         floatNewOrder.setOnClickListener {
-            mainViewModel.orderEditorEvent.value = EventWrapper(MainViewModel.NO_STRING)
+            mainViewModel.orderEditorEvent.value =
+                EventWrapper(EditorEvent(MainViewModel.NO_STRING, true))
         }
     }
 
@@ -121,6 +130,26 @@ class OrderListFragment : Fragment() {
     private fun getOrders(@OrderStatus status: Int?) {
         status?.let {
             orderListViewModel.getOrders(OrderParams<Long>(status = it))
+        }
+    }
+
+    private fun setProductsRecyclerView(itemView: View, order: Order) {
+        itemView.recyclerProducts.apply {
+            if (visibility == View.GONE) {
+                visibility = View.VISIBLE
+                adapter = InputProductAdapter {}.apply {
+                    setData(order.products ?: ArrayList())
+                }
+                layoutManager = object: LinearLayoutManager(context) {
+                    override fun canScrollVertically(): Boolean {
+                        return false
+                    }
+                }
+            } else {
+                visibility = View.GONE
+                adapter = null
+                layoutManager = null
+            }
         }
     }
 

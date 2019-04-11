@@ -3,50 +3,41 @@ package com.trunghoang.orderhub.ui.orderEditor
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.trunghoang.orderhub.R
+import com.trunghoang.orderhub.adapter.BaseRecyclerAdapter
 import com.trunghoang.orderhub.model.Product
 import com.trunghoang.orderhub.utils.FormatUtils
 import kotlinx.android.synthetic.main.item_order_list_product.view.*
 
-class InputProductAdapter(
+open class InputProductAdapter(
     private val onRemoveClick: (position: Int) -> Unit
-) : RecyclerView.Adapter<InputProductAdapter.ProductViewHolder>() {
-    private var products = ArrayList<Product>()
+) : BaseRecyclerAdapter<Product>() {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ) = LayoutInflater.from(parent.context)
+    ): BaseViewHolder<Product> = LayoutInflater.from(parent.context)
         .inflate(R.layout.item_order_list_product, parent, false)
         .let {
-            ProductViewHolder(it, onRemoveClick)
+            InputProductViewHolder(it, onRemoveClick)
         }
 
-    override fun getItemCount() = products.size
-
-    override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
-        holder.onBind(products[position])
-    }
-
-    fun setData(products: List<Product>) {
-        this.products.clear()
-        this.products.addAll(products)
-        notifyDataSetChanged()
-    }
-
-    class ProductViewHolder(
+    open class InputProductViewHolder(
         itemView: View,
-        val onRemoveClick: (position: Int) -> Unit
-    ) : RecyclerView.ViewHolder(itemView) {
-        fun onBind(product: Product) {
-            itemView.textQuantity.text = FormatUtils.longToString(product.quantity)
-            itemView.textName.text = product.name
-            itemView.textPrice.text = FormatUtils.longToString(product.price)
+        private val onRemoveClick: (position: Int) -> Unit
+    ) : BaseViewHolder<Product>(itemView) {
+        override fun onBind(item: Product) {
+            itemView.textQuantity.text = FormatUtils.longToString(item.quantity)
+            itemView.textName.text = item.name
+            itemView.textPrice.text = FormatUtils.longToString(item.price)
             Glide.with(itemView.context)
-                .load(product.photo)
+                .load(item.photo)
                 .into(itemView.imageProductPhoto)
+            bindEditModeUI()
+        }
+
+        open fun bindEditModeUI() {
             itemView.buttonRemove.apply {
                 visibility = View.VISIBLE
                 setOnClickListener {
