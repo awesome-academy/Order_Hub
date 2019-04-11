@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.trunghoang.orderhub.R
+import com.trunghoang.orderhub.adapter.BaseRecyclerAdapter
 import com.trunghoang.orderhub.adapter.DistrictsAdapter
 import com.trunghoang.orderhub.adapter.WardsAdapter
 import com.trunghoang.orderhub.databinding.FragmentOrderEditorBinding
@@ -17,25 +18,21 @@ import com.trunghoang.orderhub.ui.EditorFragment
 import com.trunghoang.orderhub.ui.inputProduct.InputProductFragment
 import com.trunghoang.orderhub.ui.mainActivity.MainViewModel
 import com.trunghoang.orderhub.utils.EventWrapper
-import com.trunghoang.orderhub.utils.hideViewOnScrollUp
 import com.trunghoang.orderhub.utils.toast
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_order_editor.*
-import java.sql.Ref
 import javax.inject.Inject
 import javax.inject.Named
 
-class OrderEditorFragment : Fragment(), EditorFragment,
-                            InputProductFragment.OnProductAddedListener {
+open class OrderEditorFragment : Fragment(), EditorFragment,
+                                 InputProductFragment.OnProductAddedListener {
     companion object {
         private const val ARGUMENT_ID = "ARGUMENT_ID"
-        private const val ARGUMENT_EDIT_MODE = "ARGUMENT_EDIT_MODE"
         @JvmStatic
-        fun newInstance(id: String, editMode: Boolean) =
+        fun newInstance(id: String) =
             OrderEditorFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARGUMENT_ID, id)
-                    putBoolean(ARGUMENT_EDIT_MODE, editMode)
                 }
             }
     }
@@ -45,16 +42,13 @@ class OrderEditorFragment : Fragment(), EditorFragment,
     lateinit var mainViewModel: MainViewModel
     @Inject
     @field:Named(OrderEditorViewModel.NAME)
-    lateinit var orderEditorViewModel: OrderEditorViewModel
-    private val orderId: String? by lazy {
+    open lateinit var orderEditorViewModel: OrderEditorViewModel
+    open var productsAdapter: BaseRecyclerAdapter<Product>? = null
+    protected val orderId: String? by lazy {
         arguments?.getString(ARGUMENT_ID)
-    }
-    private val editMode: Boolean? by lazy {
-        arguments?.getBoolean(ARGUMENT_EDIT_MODE)
     }
     private var districtsAdapter: DistrictsAdapter? = null
     private var wardsAdapter: WardsAdapter? = null
-    private var productsAdapter: InputProductAdapter? = null
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
@@ -77,13 +71,8 @@ class OrderEditorFragment : Fragment(), EditorFragment,
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        buttonAddProduct.setOnClickListener {
-            addInputProductFragment()
-        }
+        initEditModeUI()
         with(recyclerProducts) {
-            productsAdapter = InputProductAdapter {
-                orderEditorViewModel.removeProduct(it)
-            }
             adapter = productsAdapter
             layoutManager = object : LinearLayoutManager(context) {
                 override fun canScrollVertically(): Boolean {
@@ -94,23 +83,7 @@ class OrderEditorFragment : Fragment(), EditorFragment,
         mainViewModel.tokenEvent.observe(this, Observer {
             consumeToken(it)
         })
-        orderId?.let { id ->
-            if (id.isNotBlank()) {
-                orderEditorViewModel.getOrder(id)
-                buttonEdit?.setOnClickListener { _ ->
-                    mainViewModel.orderEditorEvent.value = EventWrapper(EditorEvent(id, true))
-                }
-            }
-        }
         with(orderEditorViewModel) {
-            this@OrderEditorFragment.editMode?.let {
-                editMode.value = it
-            }
-            editMode.observe(this@OrderEditorFragment, Observer {
-                addToolbar(it)
-                productsAdapter?.editMode = it
-                if (!it) scrollContainer.hideViewOnScrollUp(buttonEdit)
-            })
             orderResponse.observe(this@OrderEditorFragment, Observer {
                 consumeOrder(it)
             })
@@ -137,12 +110,52 @@ class OrderEditorFragment : Fragment(), EditorFragment,
         orderEditorViewModel.addProduct(product)
     }
 
+    fun onAttachSuper(context: Context) {
+        super.onAttach(context)
+    }
+
+    open fun initEditModeUI() {
+        orderEditorViewModel.editMode.value = true
+        orderId?.let { id ->
+            if (id.isNotBlank() && !orderDownloaded()) {
+                orderEditorViewModel.getOrder(id)
+            }
+        }
+        buttonAddProduct.setOnClickListener {
+            addInputProductFragment()
+        }
+        addToolbar()
+        productsAdapter = InputProductAdapter {
+            orderEditorViewModel.removeProduct(it)
+        }
+    }
+
+    open fun consumeOrderEditMode(order: Order) {
+        if (!orderDownloaded()) orderEditorViewModel.updateOrder(order)
+    }
+
+    open fun addToolbar() {
+        mainViewModel.toolbarInfo.value = ToolbarInfo(
+            R.id.toolbarOrderEditor,
+            R.drawable.ic_close,
+            if (orderId.isNullOrBlank()) {
+                R.string.order_editor_new_order_title
+            } else {
+                R.string.order_editor_edit_order_title
+            },
+            R.menu.menu_editor
+        )
+    }
+
+    protected fun orderDownloaded() = orderEditorViewModel.id.value != null
+
     private fun consumeOrder(orderResponse: APIResponse<Order>) {
         when (orderResponse.status) {
             EnumStatus.LOADING -> {
             }
             EnumStatus.SUCCESS -> {
-                orderEditorViewModel.updateOrder(orderResponse.data)
+                orderResponse.data?.let { consumeOrderEditMode(it) }
+
             }
             EnumStatus.ERROR -> {
                 orderResponse.error?.printStackTrace()
@@ -185,6 +198,7 @@ class OrderEditorFragment : Fragment(), EditorFragment,
     private fun consumeDistrict(district: District) {
         mainViewModel.tokenEvent.value?.peekContent()?.let { token ->
             orderEditorViewModel.apply {
+                districtFullName.value = district.fullName
                 getWards(
                     GHNApiRequest.Wards(
                         token,
@@ -322,32 +336,11 @@ class OrderEditorFragment : Fragment(), EditorFragment,
                 autoCompWard.setOnItemClickListener { parent, view, position, id ->
                     parent.getItemAtPosition(position)?.let {
                         orderEditorViewModel.ward.value = it as Ward
+                        orderEditorViewModel.wardName.value = it.name
                     }
                 }
             }
         }
-    }
-
-    private fun addToolbar(editMode: Boolean) {
-        mainViewModel.toolbarInfo.value =
-            if (editMode) {
-                ToolbarInfo(
-                    R.id.toolbarOrderEditor,
-                    R.drawable.ic_close,
-                    if (orderId.isNullOrBlank()) {
-                        R.string.order_editor_new_order_title
-                    } else {
-                        R.string.order_editor_edit_order_title
-                    },
-                    R.menu.menu_editor
-                )
-            } else {
-                ToolbarInfo(
-                    R.id.toolbarOrderEditor,
-                    R.drawable.ic_back,
-                    R.string.order_editor_detail_title
-                )
-            }
     }
 
     private fun addInputProductFragment() {

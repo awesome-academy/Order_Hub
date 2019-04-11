@@ -14,13 +14,13 @@ import com.trunghoang.orderhub.model.ToolbarInfo
 import com.trunghoang.orderhub.ui.EditorFragment
 import com.trunghoang.orderhub.ui.login.LoginFragment
 import com.trunghoang.orderhub.ui.mainScreen.MainScreenFragment
+import com.trunghoang.orderhub.ui.orderDetail.OrderDetailFragment
 import com.trunghoang.orderhub.ui.orderEditor.OrderEditorFragment
 import com.trunghoang.orderhub.utils.EventWrapper
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.fragment_main_screen.*
-import java.sql.Ref
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -101,7 +101,11 @@ class MainActivity : AppCompatActivity(),
 
     private fun consumeOrderEditor(orderEditorEvent: EventWrapper<EditorEvent>?) {
         orderEditorEvent?.getContentIfNotHandled()?.apply {
-            openOrderEditorFragment(id, editMode)
+            if (editMode) {
+                openOrderEditorFragment(id)
+            } else {
+                openOrderDetailFragment(id)
+            }
         }
     }
 
@@ -120,11 +124,21 @@ class MainActivity : AppCompatActivity(),
             .commit()
     }
 
-    private fun openOrderEditorFragment(id: String, editMode: Boolean) {
+    private fun openOrderEditorFragment(id: String) {
         supportFragmentManager.beginTransaction()
             .replace(
                 R.id.constraint_main,
-                OrderEditorFragment.newInstance(id, editMode)
+                OrderEditorFragment.newInstance(id)
+            )
+            .addToBackStack(null)
+            .commit()
+    }
+
+    private fun openOrderDetailFragment(id: String) {
+        supportFragmentManager.beginTransaction()
+            .replace(
+                R.id.constraint_main,
+                OrderDetailFragment.newInstance(id)
             )
             .addToBackStack(null)
             .commit()

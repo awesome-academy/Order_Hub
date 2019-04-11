@@ -9,6 +9,9 @@ import com.trunghoang.orderhub.ui.login.LoginFragmentScope
 import com.trunghoang.orderhub.ui.mainScreen.MainScreenFragment
 import com.trunghoang.orderhub.ui.mainScreen.MainScreenFragmentScope
 import com.trunghoang.orderhub.ui.mainScreen.MainScreenModule
+import com.trunghoang.orderhub.ui.orderDetail.OrderDetailFragment
+import com.trunghoang.orderhub.ui.orderDetail.OrderDetailModule
+import com.trunghoang.orderhub.ui.orderDetail.OrderDetailScope
 import com.trunghoang.orderhub.ui.orderEditor.OrderEditorFragment
 import com.trunghoang.orderhub.ui.orderEditor.OrderEditorModule
 import com.trunghoang.orderhub.ui.orderEditor.OrderEditorScope
@@ -32,4 +35,8 @@ abstract class FragmentModule {
     @ContributesAndroidInjector(modules = [InputProductModule::class])
     @InputProductScope
     abstract fun contributeInputProductFragment(): InputProductFragment
+
+    @ContributesAndroidInjector(modules = [OrderDetailModule::class])
+    @OrderDetailScope
+    abstract fun contributeOrderDetailFragment(): OrderDetailFragment
 }
