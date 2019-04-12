@@ -55,4 +55,7 @@
     <string name="order_editor_status_title">Trạng thái:</string>
     <string name="order_editor_last_modified_title">Cập nhật lần cuối:</string>
     <string name="order_editor_created_time_title">Ngày tạo:</string>
+    <string name="item_menu_select_all">Chọn tất cả</string>
+    <string name="order_selection_button_delete">Xoá</string>
+    <string name="order_selection_button_create_shipment">Gửi sang HVC</string>
 </resources>

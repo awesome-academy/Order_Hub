@@ -18,6 +18,7 @@ import com.trunghoang.orderhub.ui.EditorFragment
 import com.trunghoang.orderhub.ui.inputProduct.InputProductFragment
 import com.trunghoang.orderhub.ui.mainActivity.MainViewModel
 import com.trunghoang.orderhub.utils.EventWrapper
+import com.trunghoang.orderhub.utils.hideViewOnScrollUp
 import com.trunghoang.orderhub.utils.toast
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_order_editor.*
@@ -83,6 +84,14 @@ open class OrderEditorFragment : Fragment(), EditorFragment,
         mainViewModel.tokenEvent.observe(this, Observer {
             consumeToken(it)
         })
+        orderId?.let { id ->
+            if (id.isNotBlank()) {
+                orderEditorViewModel.getOrder(id)
+                buttonEdit?.setOnClickListener { _ ->
+                    mainViewModel.orderEditorEvent.value = EventWrapper(EditorEvent(id, true))
+                }
+            }
+        }
         with(orderEditorViewModel) {
             orderResponse.observe(this@OrderEditorFragment, Observer {
                 consumeOrder(it)

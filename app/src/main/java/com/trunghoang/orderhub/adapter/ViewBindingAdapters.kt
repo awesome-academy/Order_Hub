@@ -1,4 +1,4 @@
-package com.trunghoang.orderhub.utils
+package com.trunghoang.orderhub.adapter
 
 import android.os.Build
 import android.text.Editable
@@ -16,10 +16,13 @@ import androidx.databinding.InverseBindingListener
 import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.Glide
 import com.trunghoang.orderhub.R
+import com.trunghoang.orderhub.utils.FormatUtils
+import com.trunghoang.orderhub.utils.getOrderStatusText
 
 @BindingAdapter("longNumber")
 fun EditText.bindLongNumber(longNumber: MutableLiveData<Long>) {
-    val s = FormatUtils.longToString(longNumber.value)
+    val s =
+        FormatUtils.longToString(longNumber.value)
     if (text.toString() != s) {
         setText(s)
     }
@@ -27,7 +30,7 @@ fun EditText.bindLongNumber(longNumber: MutableLiveData<Long>) {
 
 @BindingAdapter("longNumberAttrChanged")
 fun EditText.setNumberListener(listener: InverseBindingListener) {
-    addTextChangedListener( object : TextWatcher {
+    addTextChangedListener(object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {}
 
         override fun beforeTextChanged(
@@ -35,7 +38,8 @@ fun EditText.setNumberListener(listener: InverseBindingListener) {
             start: Int,
             count: Int,
             after: Int
-        ) {}
+        ) {
+        }
 
         override fun onTextChanged(
             s: CharSequence?,
@@ -49,7 +53,10 @@ fun EditText.setNumberListener(listener: InverseBindingListener) {
     })
 }
 
-@InverseBindingAdapter(attribute = "longNumber", event = "longNumberAttrChanged")
+@InverseBindingAdapter(
+    attribute = "longNumber",
+    event = "longNumberAttrChanged"
+)
 fun EditText.getTextNumber(): Long? {
     return FormatUtils.stringToLong(text.toString()) as Long?
 }

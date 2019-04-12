@@ -95,4 +95,9 @@
         <item name="android:textSize">@dimen/order_editor_product_input_text</item>
     </style>
 
+    <style name="TextIconButton">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textColor">@color/color_primary_text</item>
+    </style>
+
 </resources>
